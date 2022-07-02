@@ -1,0 +1,7 @@
+{
+  "name": "distribuidora-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
