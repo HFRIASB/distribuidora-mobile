@@ -15,22 +15,36 @@
           <div text-center>
             <h3>Crea tu cuenta</h3>
           </div>
+            <ion-item >
+              <ion-thumbnail>
+              <ion-img [src]="image"></ion-img>
+              </ion-thumbnail>
+            </ion-item>
           <div padding>
             <ion-item>
-              <ion-input  name="name" type="text" placeholder="Namo" ngModel required></ion-input>
+              <ion-input  name="nombre" type="text" placeholder="Nombre" ngModel required></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input name="email" type="email" placeholder="your@email.com" ngModel required></ion-input>
+              <ion-input  name="apepat" type="text" placeholder="Apellido Paterno" ngModel required></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input name="password" type="password" placeholder="Password" ngModel required></ion-input>
+              <ion-input  name="apemat" type="text" placeholder="Apellido Materno" ngModel required></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input name="confirm" type="password" placeholder="Password again" ngModel required></ion-input>
+              <ion-input name="celular" type="number" placeholder="Número de celular" ngModel required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input name="ci" type="text" placeholder="Carnet de Identidad" ngModel ></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input name="contraseña" type="password" placeholder="Password" ngModel required></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input name="verificarContraseña" type="password" placeholder="Password again" ngModel required></ion-input>
             </ion-item>
           </div>
           <div padding>
-            <ion-button  size="large" type="submit" [disabled]="form.invalid" expand="block">Register</ion-button>
+            <ion-button  size="large" type="submit" [disabled]="form.invalid" expand="block">REGISTRARSE</ion-button>
           </div>
         </ion-col>
       </ion-row>

@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 })
 export class RegisterPage implements OnInit {
 
+
+
   constructor(private router: Router) { }
 
   ngOnInit() {

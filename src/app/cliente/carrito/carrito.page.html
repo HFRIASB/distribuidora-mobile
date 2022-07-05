@@ -1,9 +1,66 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>carrito</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start" padding >
+      <ion-icon name="menu"></ion-icon>
+    </ion-buttons>
+    <ion-title>Carrito</ion-title>
+    <ion-buttons slot="start" padding >
+      <ion-icon name="cart-outline"></ion-icon>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <ion-item>
+    <ion-grid>
+      <ion-row>
+        <ion-col sizeLg="4" sizeMg="4" sizeXs="2">
+          <ion-thumbnail>
+            <ion-img [src]="image"></ion-img>
+          </ion-thumbnail>
+        </ion-col>
+        <ion-col>
+          <ion-row >
+            <div>Nombre Producto</div>
+          </ion-row>
+          <ion-row>
+            <ion-col col-6 class="calculation" width-50>
+              <button class="add-btn" clear (click)="decrementQty()"><ion-icon name="remove-circle" ></ion-icon></button>
+                <span>{{qty}}</span>
+              <button class="add-btn" clear (click)="incrementQty()"><ion-icon name="add-circle" ></ion-icon></button>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-item>
+  <ion-item>
+    <ion-thumbnail>
+      <ion-img [src]="image"></ion-img>
+    </ion-thumbnail>
+    <ion-label>
+      Homero Simpson
+    </ion-label>
+  </ion-item> 
+
+  <!-- <form  #form="ngForm" (ngSubmit)="register(dateForm)"> -->
+  <ion-item>
+    <ion-label> Fecha de entrega</ion-label>
+    <ion-datetime [showDefaultButtons]="true"
+                  
+                  placeholder="Ffecha de Entrega"
+                  
+                  display-format="YYYY MMMM DD"
+                  cancelText="Cancelar!"
+                  [ngModel]="fechaEntrega.toISOString()"
+                  (ionChange)="cambioFecha($event)">
+    </ion-datetime>
+  </ion-item> 
+  <div padding>
+    <!-- <ion-button  size="large" type="submit" [disabled]="form.invalid" expand="block">REALIZAR PEDIDO</ion-button> -->
+  </div>
+<!--</form>-->
 
 </ion-content>
+
