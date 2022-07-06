@@ -1,0 +1,29 @@
+<ion-menu side="start" menuId="first" contentId="direccion">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title>OPCIONES</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item (click)="goProductos()">Productos</ion-item>
+      <ion-item>Mis Pedidos</ion-item>
+      <ion-item>Cerrar Sesion</ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-router-outlet id="direccion">
+
+  <ion-header>
+    <ion-toolbar>
+      <ion-menu-button class="icon" slot="start"></ion-menu-button>
+      <ion-title>Direcciones</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+
+  </ion-content>
+
+</ion-router-outlet>

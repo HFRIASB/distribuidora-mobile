@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router' ;
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 
@@ -54,7 +54,7 @@ export class HomePage implements OnInit {
   }
 
 
-  constructor(private router: Router, public toastController: ToastController, private alertController: AlertController) {
+  constructor(private router: Router, public toastController: ToastController, private alertController: AlertController, private route: ActivatedRoute,) {
     this.carrito.cliente_id = 1;
   }
 
@@ -116,6 +116,9 @@ export class HomePage implements OnInit {
   }
   seleccionarDireccion(event) {
     this.carrito.direccion_id=event.detail.value;
+  }
+  goDirecciones(){
+    this.router.navigate(['/direcciones'], { relativeTo: this.route })
   }
 
 
