@@ -118,7 +118,7 @@ export class HomePage implements OnInit {
     this.carrito.direccion_id=event.detail.value;
   }
   goDirecciones(){
-    this.router.navigate(['/direcciones'], { relativeTo: this.route })
+    this.router.navigate(['/direcciones'], { relativeTo: this.route,replaceUrl: true })
   }
 
 

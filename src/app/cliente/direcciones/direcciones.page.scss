@@ -1,0 +1,38 @@
+.logo{
+width: 60%;
+}
+.direccionItem{
+    width: 100%;
+    }
+.containerImage{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.flexContainer{
+    height: 90%;
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+.nombreUsuario{
+    font-weight: bold;
+}
+.separador{
+    width: 100%;
+    border-bottom: 10 solid blue;
+
+}
+.margin{
+    margin-left: 15px;
+}
+.nombreDireccion{
+    font-weight: bold;
+}
+
+.direccionContenedor{
+    margin: 15px;
+}
