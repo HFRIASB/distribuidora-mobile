@@ -1,38 +1,50 @@
-.logo{
-width: 60%;
+.logo {
+    width: 60%;
 }
-.direccionItem{
+
+.direccionItem {
     width: 100%;
-    }
-.containerImage{
+}
+
+.containerImage {
     width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
-.flexContainer{
+
+.flexContainer {
     height: 90%;
-    display:flex;
+    display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
-.nombreUsuario{
+
+.nombreUsuario {
     font-weight: bold;
 }
-.separador{
+
+.separador {
     width: 100%;
     border-bottom: 10 solid blue;
-
 }
-.margin{
+
+.margin {
     margin-left: 15px;
 }
-.nombreDireccion{
+
+.nombreDireccion {
     font-weight: bold;
 }
+.nombreDirec {
+    margin-left: 15px;
+}
+.descripcionDireccion {
+    margin-left: 30px;
+}
 
-.direccionContenedor{
+.direccionContenedor {
     margin: 15px;
 }

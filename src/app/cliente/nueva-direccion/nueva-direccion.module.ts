@@ -8,7 +8,10 @@ import { NuevaDireccionPageRoutingModule } from './nueva-direccion-routing.modul
 
 import { NuevaDireccionPage } from './nueva-direccion.page';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     FormsModule,
@@ -17,4 +20,4 @@ import { NuevaDireccionPage } from './nueva-direccion.page';
   ],
   declarations: [NuevaDireccionPage]
 })
-export class NuevaDireccionPageModule {}
+export class NuevaDireccionPageModule { }

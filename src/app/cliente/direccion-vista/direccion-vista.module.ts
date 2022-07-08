@@ -8,7 +8,10 @@ import { DireccionVistaPageRoutingModule } from './direccion-vista-routing.modul
 
 import { DireccionVistaPage } from './direccion-vista.page';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     FormsModule,
@@ -17,4 +20,4 @@ import { DireccionVistaPage } from './direccion-vista.page';
   ],
   declarations: [DireccionVistaPage]
 })
-export class DireccionVistaPageModule {}
+export class DireccionVistaPageModule { }

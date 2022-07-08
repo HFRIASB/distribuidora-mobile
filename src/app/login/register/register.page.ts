@@ -14,7 +14,7 @@ export class RegisterPage implements OnInit {
 
   ngOnInit() {
   }
-  register(form){
+  register(form) {
     console.log(form.value)
     this.router.navigate(['/home'])
   }

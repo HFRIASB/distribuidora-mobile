@@ -7,44 +7,45 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content  >
-  <form  #form="ngForm" (ngSubmit)="register(form)">
+<ion-content>
+  <form #form="ngForm" (ngSubmit)="register(form)">
     <ion-grid>
-      <ion-row  justify-content-center>
+      <ion-row justify-content-center>
         <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
           <div text-center>
             <h3>Crea tu cuenta</h3>
           </div>
-            <ion-item >
-              <ion-thumbnail>
+          <ion-item>
+            <ion-thumbnail>
               <ion-img [src]="image"></ion-img>
-              </ion-thumbnail>
-            </ion-item>
+            </ion-thumbnail>
+          </ion-item>
           <div padding>
             <ion-item>
-              <ion-input  name="nombre" type="text" placeholder="Nombre" ngModel required></ion-input>
+              <ion-input name="nombre" type="text" placeholder="Nombre" ngModel required></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input  name="apepat" type="text" placeholder="Apellido Paterno" ngModel required></ion-input>
+              <ion-input name="apepat" type="text" placeholder="Apellido Paterno" ngModel required></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input  name="apemat" type="text" placeholder="Apellido Materno" ngModel required></ion-input>
+              <ion-input name="apemat" type="text" placeholder="Apellido Materno" ngModel required></ion-input>
             </ion-item>
             <ion-item>
               <ion-input name="celular" type="number" placeholder="Número de celular" ngModel required></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input name="ci" type="text" placeholder="Carnet de Identidad" ngModel ></ion-input>
+              <ion-input name="ci" type="text" placeholder="Carnet de Identidad" ngModel></ion-input>
             </ion-item>
             <ion-item>
               <ion-input name="contraseña" type="password" placeholder="Password" ngModel required></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input name="verificarContraseña" type="password" placeholder="Password again" ngModel required></ion-input>
+              <ion-input name="verificarContraseña" type="password" placeholder="Password again" ngModel required>
+              </ion-input>
             </ion-item>
           </div>
           <div padding>
-            <ion-button  size="large" type="submit" [disabled]="form.invalid" expand="block">REGISTRARSE</ion-button>
+            <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">REGISTRARSE</ion-button>
           </div>
         </ion-col>
       </ion-row>

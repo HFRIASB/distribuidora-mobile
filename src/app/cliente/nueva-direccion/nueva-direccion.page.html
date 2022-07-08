@@ -1,9 +1,61 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>nueva-direccion</ion-title>
+  <ion-toolbar color="primary">
+    <ion-back-button></ion-back-button>
+    <ion-title>Nueva Dirección</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <capacitor-google-maps #map></capacitor-google-maps>
+  <div class="boton">
+    <ion-button shape="round" (click)="confirmarUbiacion(true)" >Confirmar ubicación</ion-button>
+  </div>
 
+  <ion-modal [isOpen]="isModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Datos útiles</ion-title>
+          <ion-buttons slot="end">
+            <ion-icon (click)="confirmarUbiacion(false)" name="close" class="icon"></ion-icon>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+
+        <form #form="ngForm" (ngSubmit)="guardarUbicaion(form)">
+          <ion-grid>
+            <ion-row color="primary" justify-content-center>
+              <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
+                <div padding>
+                  <ion-label>Nombre de la ubicación:</ion-label>
+                  <ion-item class="input">
+                    <ion-input name="direccion_nombre" type="text" placeholder="Asigne un nombre a la ubicación" ngModel required></ion-input>
+                  </ion-item>
+                  <ion-label>Descripción de la dirección:</ion-label>
+                  <ion-item class="input">
+                    <ion-input name="direccion_descripcion" type="text" placeholder="¿Alguna indicación para la entrega?" ngModel required></ion-input>
+                  </ion-item>
+                  <ion-grid>
+                    <ion-row>
+                      <ion-label class="ejemplo">Ej: Casa ploma con puertas negras #1234</ion-label>
+                    </ion-row>
+                    <ion-row>
+                      <ion-label class="ejemplo">Ej: Comercial Miamicito, caseta #123</ion-label>
+                    </ion-row>
+                  </ion-grid>
+                </div>
+                <div padding>
+                  <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">Guardar ubicación</ion-button>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </form>
+
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
+
+

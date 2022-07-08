@@ -1,22 +1,26 @@
-.flexContainer{
-    display:flex;
+.flexContainer {
+    display: flex;
     justify-content: space-between;
     width: 100%;
 }
-.icon-div{
-    display:flex;
+
+.icon-div {
+    display: flex;
     align-content: center;
     justify-content: center;
 }
-.icon{
+
+.icon {
     font-size: xx-large;
     margin: auto 0;
 }
-.color{
+
+.color {
     background-color: aqua;
     width: 100%;
 }
-.input{
+
+.input {
     width: 100%;
     -moz-border-radius: 50px;
     -webkit-border-radius: 50px;
@@ -25,3 +29,31 @@
     border-color: grey;
     background-color: gray;
 }
+
+.logo {
+    width: 60%;
+}
+
+.separador {
+    width: 100%;
+    border-bottom: 10 solid blue;
+}
+
+.containerImage {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.nombreUsuario {
+    font-weight: bold;
+}
+
+.margin {
+    margin-left: 15px;
+}
+
+.boton {
+    text-align: center;
+  }

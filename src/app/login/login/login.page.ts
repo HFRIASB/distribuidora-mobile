@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -7,15 +7,41 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  
 
   constructor(
-    private router: Router
+    private router: Router, private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
   }
-  goRegister(){
-    this.router.navigate(['/register'])
+  goRegister() {
+    this.router.navigate(['/register'],
+    {
+      relativeTo: this.route,
+      replaceUrl: true
+    });
+  }
+  login(form){
+    let user= {
+      id:1,
+      accessToken: "asdadfsargedfh",
+      rol:"cliente"
+    };
+
+    if (user.rol == "cliente") {
+      this.router.navigate(['/home'],
+      {
+        relativeTo: this.route,
+        replaceUrl: true
+      });
+    }else if (user.rol == "repartidor") {
+      this.router.navigate(['/pedidos'],
+      {
+        relativeTo: this.route,
+        replaceUrl: true
+      });
+    }
   }
 
 }

@@ -1,9 +1,15 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>direccion-vista</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-label>Nombre Dirección</ion-label>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <capacitor-google-maps #map></capacitor-google-maps>
+  <div class="boton">
+    <ion-button shape="round" (click)="eliminarDireccion()" >Eliminar dirección</ion-button>
+  </div>
 </ion-content>

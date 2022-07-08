@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Pedidos</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item *ngFor="let pedido of pedidos">
+
+
+    <div class="flexContainer">
+      <div>
+       <!-- <ion-list>
+          <ion-item>
+            <ion-label>{{pedido.cliente.cliente_nombre}} </ion-label>
+            <ion-label>{{pedido.entrega_fecha}} </ion-label>
+            <ion-label>{{pedido.pedido_estado}} </ion-label>
+          </ion-item>
+        </ion-list> -->  
+        <ion-grid (click)="abrirPedido()">
+          <ion-row class="nombrePedido">
+            <ion-label>{{pedido.cliente.cliente_nombre}} </ion-label>
+          </ion-row>
+          <ion-row class="fechaPedido">
+            <ion-label>{{pedido.entrega_fecha}} </ion-label>
+          </ion-row>
+          <ion-row class="estadoPedido">
+            <ion-label>{{pedido.pedido_estado}} </ion-label>
+          </ion-row>
+        </ion-grid>      
+      </div>
+
+    </div>
+
+  </ion-item>
+
+
+</ion-content>

@@ -20,13 +20,10 @@ const routes: Routes = [
     loadChildren: () => import('./cliente/home/home.module').then( m => m.HomePageModule)
   },
   {
-    path: 'carrito',
-    loadChildren: () => import('./cliente/carrito/carrito.module').then( m => m.CarritoPageModule)
-  },
-  {
     path: 'direcciones',
     loadChildren: () => import('./cliente/direcciones/direcciones.module').then( m => m.DireccionesPageModule)
-  },  {
+  },
+  {
     path: 'nueva-direccion',
     loadChildren: () => import('./cliente/nueva-direccion/nueva-direccion.module').then( m => m.NuevaDireccionPageModule)
   },
@@ -34,6 +31,14 @@ const routes: Routes = [
     path: 'direccion-vista',
     loadChildren: () => import('./cliente/direccion-vista/direccion-vista.module').then( m => m.DireccionVistaPageModule)
   },
+  {
+    path: 'pedidos',
+    loadChildren: () => import('./repartidor/pedidos/pedidos.module').then( m => m.PedidosPageModule)
+  },  {
+    path: 'pedido-vista',
+    loadChildren: () => import('./repartidor/pedido-vista/pedido-vista.module').then( m => m.PedidoVistaPageModule)
+  },
+
 
 ];
 

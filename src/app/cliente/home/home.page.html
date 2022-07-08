@@ -5,10 +5,31 @@
     </ion-toolbar>
   </ion-header>
   <ion-content>
+
+    <div class="containerImage">
+      <ion-item class="logo">
+        <ion-img [src]="image"></ion-img>
+      </ion-item>
+    </div>
+    <ion-item class="separador">
+      <div class="containerImage">
+        <ion-label class="nombreUsuario" color="medium">Henry Frias Baldelomar</ion-label>
+      </div>
+    </ion-item>
+
     <ion-list>
-      <ion-item (click)="goDirecciones()">Direcciones</ion-item>
-      <ion-item>Mis Pedidos</ion-item>
-      <ion-item>Cerrar Sesion</ion-item>
+      <ion-item (click)="goDirecciones()">
+        <ion-icon name="location-outline"></ion-icon>
+        <ion-label class="margin">Productos</ion-label>
+      </ion-item>
+      <ion-item (click)="goPedidos()">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label class="margin">Mis Pedidos</ion-label>
+      </ion-item>
+      <ion-item (click)="goCerrarSesion()">
+        <ion-icon name="exit-outline"></ion-icon>
+        <ion-label class="margin">Cerrar Sesion</ion-label>
+      </ion-item>
     </ion-list>
   </ion-content>
 </ion-menu>
@@ -25,12 +46,12 @@
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
-  
+
   <ion-content>
-  
+
     <ion-item *ngFor="let product of productos">
-  
-  
+
+
       <div class="flexContainer">
         <div>
           <ion-grid>
@@ -46,18 +67,18 @@
             </ion-row>
           </ion-grid>
         </div>
-  
+
         <div class="icon-div">
           <div class="icon">
             <!-- <ion-icon (click)="addCart" [src]="icon"></ion-icon> -->
             <ion-icon (click)="addCart(product.producto_id, product.producto_nombre)" name="cart-outline"></ion-icon>
           </div>
         </div>
-  
+
       </div>
-  
+
     </ion-item>
-  
+
     <ion-modal [isOpen]="isModalOpen">
       <ng-template>
         <ion-header>
@@ -84,7 +105,7 @@
               </ion-row>
             </ion-grid>
           </ion-item>
-          <ion-item >
+          <ion-item>
             <ion-grid>
               <ion-row>
                 <ion-col>
@@ -93,11 +114,12 @@
               </ion-row>
               <ion-row>
                 <ion-item class="input">
-                  <ion-input value="{{ date | date: 'dd.MM.yyyy' }}" id="date" placeholder="Selecione Fecha"></ion-input>
+                  <ion-input value="{{ date | date: 'dd.MM.yyyy' }}" id="date" placeholder="Selecione Fecha">
+                  </ion-input>
                 </ion-item>
                 <ion-popover trigger="date" size="cover">
                   <ng-template>
-                    <ion-datetime presentation="date" [(ngModel)]="date" ></ion-datetime>
+                    <ion-datetime presentation="date" [(ngModel)]="date"></ion-datetime>
                   </ng-template>
                 </ion-popover>
               </ion-row>
@@ -105,19 +127,22 @@
                 <ion-label>Seleccione Dirección</ion-label>
               </ion-row>
               <ion-row>
-                <ion-item class="input" >
-                  
-  
+                <ion-item class="input">
+
+
                   <ion-select [(ngModel)]="carrito.direccion_id" (ionChange)='seleccionarDireccion($event)'>
                     <ion-select-option *ngFor="let direccion of direcciones" value="{{direccion.direccion_id}}">
                       {{ direccion.direccion_nombre }}
                     </ion-select-option>
                   </ion-select>
-  
+
                 </ion-item>
               </ion-row>
               <ion-row>
-                <ion-button [disabled]="this.carrito.productos.length<1" shape="round" color="primary" (click)="hacerPedido(date)">REALIZAR ENTREGA</ion-button>
+                <div class="boton">
+                  <ion-button [disabled]="this.carrito.productos.length<1" shape="round" color="primary"
+                    (click)="hacerPedido(date)">REALIZAR ENTREGA</ion-button>
+                </div>
               </ion-row>
             </ion-grid>
           </ion-item>
@@ -126,4 +151,3 @@
     </ion-modal>
   </ion-content>
 </ion-router-outlet>
-
