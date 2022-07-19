@@ -121,5 +121,18 @@ export class HomePage implements OnInit {
     this.router.navigate(['/direcciones'], { relativeTo: this.route, replaceUrl: true })
   }
 
+  goMisPedidos(){
+    this.router.navigate(['/pedido-cliente'],
+      {
+        relativeTo: this.route,
+        replaceUrl: true
+      });
+  }
+
+  customAlertOptions = {
+    header: 'Selecione la ubicación de entrega',
+    translucent: true
+  };
+
 
 }

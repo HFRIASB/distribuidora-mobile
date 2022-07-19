@@ -1,9 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-title>Nombre Dirección</ion-title>
+    <ion-title>direccion_cliente</ion-title>
     <ion-buttons slot="start">
       <ion-icon (click)="goBack()" name="arrow-back-outline" class="icon"></ion-icon>
     </ion-buttons>
@@ -12,7 +9,5 @@
 
 <ion-content>
   <capacitor-google-maps #map></capacitor-google-maps>
-  <div class="boton">
-    <ion-button shape="round" (click)="eliminarDireccion()" >Eliminar dirección</ion-button>
-  </div>
+
 </ion-content>

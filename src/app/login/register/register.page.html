@@ -1,25 +1,23 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
-    </ion-buttons>
-    <ion-label>Registrar</ion-label>
-  </ion-toolbar>
+
 </ion-header>
 
 <ion-content>
   <form #form="ngForm" (ngSubmit)="register(form)">
     <ion-grid>
+      <ion-row>
+        <ion-icon name="arrow-back-outline" class="icon" color="primary" (click)="goBack()"></ion-icon>
+      </ion-row>
       <ion-row justify-content-center>
-        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
-          <div text-center>
+        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12" >
+          <div text-center  class="titulo">
             <h3>Crea tu cuenta</h3>
           </div>
-          <ion-item>
-            <ion-thumbnail>
-              <ion-img [src]="image"></ion-img>
-            </ion-thumbnail>
-          </ion-item>
+          <div class="containerImage">
+            <ion-item class="logo">
+              <ion-img [src]="image" style="align-items: center"></ion-img>
+            </ion-item>
+          </div>
           <div padding>
             <ion-item>
               <ion-input name="nombre" type="text" placeholder="Nombre" ngModel required></ion-input>
@@ -37,14 +35,14 @@
               <ion-input name="ci" type="text" placeholder="Carnet de Identidad" ngModel></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input name="contraseña" type="password" placeholder="Password" ngModel required></ion-input>
+              <ion-input name="contraseña" type="password" placeholder="Contraseña" ngModel required></ion-input>
             </ion-item>
             <ion-item>
-              <ion-input name="verificarContraseña" type="password" placeholder="Password again" ngModel required>
+              <ion-input name="verificarContraseña" type="password" placeholder="Verificar Contraseña" ngModel required>
               </ion-input>
             </ion-item>
           </div>
-          <div padding>
+          <div padding class="boton">
             <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">REGISTRARSE</ion-button>
           </div>
         </ion-col>

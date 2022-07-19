@@ -47,4 +47,12 @@ export class DireccionesPage implements OnInit {
       });
   }
 
+  goMisPedidos(){
+    this.router.navigate(['/pedido-cliente'],
+      {
+        relativeTo: this.route,
+        replaceUrl: true
+      });
+  }
+
 }

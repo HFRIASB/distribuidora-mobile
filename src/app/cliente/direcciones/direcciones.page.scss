@@ -10,7 +10,15 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 50px;
+}
+
+.containerImageNombre{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 .flexContainer {
@@ -37,14 +45,24 @@
 
 .nombreDireccion {
     font-weight: bold;
+
 }
+.icon {
+    font-weight: bold;
+    font-size: xx-large;
+    margin: 5px;
+}
+
+
 .nombreDirec {
-    margin-left: 15px;
+    margin-left: 1px;
 }
 .descripcionDireccion {
-    margin-left: 30px;
+    margin-left: 1px;
 }
 
 .direccionContenedor {
-    margin: 15px;
+    margin: 1px;
 }
+
+

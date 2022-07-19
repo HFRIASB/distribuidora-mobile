@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'register',
     pathMatch: 'full'
   },
   {
@@ -34,10 +34,19 @@ const routes: Routes = [
   {
     path: 'pedidos',
     loadChildren: () => import('./repartidor/pedidos/pedidos.module').then( m => m.PedidosPageModule)
-  },  {
+  },
+  {
     path: 'pedido-vista',
     loadChildren: () => import('./repartidor/pedido-vista/pedido-vista.module').then( m => m.PedidoVistaPageModule)
+  },  {
+    path: 'pedido-cliente',
+    loadChildren: () => import('./cliente/pedido-cliente/pedido-cliente.module').then( m => m.PedidoClientePageModule)
   },
+  {
+    path: 'direccion-pedido',
+    loadChildren: () => import('./repartidor/direccion-pedido/direccion-pedido.module').then( m => m.DireccionPedidoPageModule)
+  },
+
 
 
 ];

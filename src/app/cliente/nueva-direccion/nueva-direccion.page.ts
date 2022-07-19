@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
 import { ToastController } from '@ionic/angular';
@@ -30,7 +30,7 @@ export class NuevaDireccionPage implements OnInit {
       direccion_longitud: null
     };
 
-  constructor(private router: Router, public toastController: ToastController) { }
+  constructor(private router: Router, public toastController: ToastController, private route: ActivatedRoute) { }
 
   ngOnInit() {
   }
@@ -121,6 +121,10 @@ export class NuevaDireccionPage implements OnInit {
       color: color,
     });
     toast.present();
+  }
+
+  goBack() {
+    this.router.navigate(['/direcciones'], { relativeTo: this.route, replaceUrl: true })
   }
 
 }

@@ -8,7 +8,11 @@ import { PedidoVistaPageRoutingModule } from './pedido-vista-routing.module';
 
 import { PedidoVistaPage } from './pedido-vista.page';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
+
 @NgModule({
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     CommonModule,
     FormsModule,

@@ -1,32 +1,24 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-direccion-vista',
-  templateUrl: './direccion-vista.page.html',
-  styleUrls: ['./direccion-vista.page.scss'],
+  selector: 'app-direccion-pedido',
+  templateUrl: './direccion-pedido.page.html',
+  styleUrls: ['./direccion-pedido.page.scss'],
 })
-export class DireccionVistaPage implements OnInit {
+export class DireccionPedidoPage implements OnInit {
 
-  direccion =
-    {
-      direccion_id: 1,
-      direccion_nombre: 'Caseta San Martin',
-      direccion_descripcion: 'Puesto rojo #23',
-      direccion_latitud: -17.401472,
-      direccion_longitud: -66.155927
-    };
-
+  
   @ViewChild('map')
   mapRef: ElementRef<HTMLElement>;
   newMap: GoogleMap;
   center: any = {
-    lat: this.direccion.direccion_latitud,
-    lng: this.direccion.direccion_longitud,
-    //lat: -17.401472,
-    //lng: -66.155927,
+    //lat: this.pedido.direccion.direccion_latitude,
+    //lng: this.pedido.direccion.direccion_longitude,
+    lat: -17.401472,
+    lng: -66.155927,
   };
   markerId: string;
 
@@ -73,6 +65,8 @@ export class DireccionVistaPage implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/direcciones'], { relativeTo: this.route, replaceUrl: true })
+    this.router.navigate(['/pedido-vista'], { relativeTo: this.route, replaceUrl: true })
   }
+
+
 }

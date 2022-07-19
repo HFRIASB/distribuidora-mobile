@@ -2,15 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-pedidos',
-  templateUrl: './pedidos.page.html',
-  styleUrls: ['./pedidos.page.scss'],
+  selector: 'app-pedido-cliente',
+  templateUrl: './pedido-cliente.page.html',
+  styleUrls: ['./pedido-cliente.page.scss'],
 })
-export class PedidosPage implements OnInit {
+export class PedidoClientePage implements OnInit {
 
   image = "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/fa33b82/2147483647/resize/300x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2Fhomer.png"
  
-
   pedidos = [
     { 
       pedido_id: 1,
@@ -78,17 +77,10 @@ export class PedidosPage implements OnInit {
     }
   ]
 
+
   constructor(private router: Router, private route: ActivatedRoute) { }
 
   ngOnInit() {
-  }
-
-  abrirPedido(){
-    this.router.navigate(['/pedido-vista'],
-    {
-      relativeTo: this.route,
-      replaceUrl: true
-    });
   }
 
   goProducto(){
@@ -99,9 +91,13 @@ export class PedidosPage implements OnInit {
     });
   }
 
-
-  goCerrarSesion(){
+  goDirecciones(){
+    this.router.navigate(['/direcciones'],
+    {
+      relativeTo: this.route,
+      replaceUrl: true
+    });
+  }
   
-}
 
 }
