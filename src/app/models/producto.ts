@@ -14,5 +14,4 @@ export class Producto {
 
     uniMedida_prod: string;
 
-    //ordenProducto: OrdenProducto[];
 }

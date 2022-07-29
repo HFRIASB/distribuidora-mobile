@@ -1,3 +1,5 @@
+import { Direccion } from "./direccion";
+import { Orden } from "./orden";
 import { Rol } from "./rol";
 
 export class Usuario {
@@ -30,9 +32,9 @@ export class Usuario {
     
     rol: Rol;
 
-    //direccion: Direccion[];
+    direccion: Direccion[];
 
-   // orden: Orden[];
+    orden: Orden[];
 
 
 }
