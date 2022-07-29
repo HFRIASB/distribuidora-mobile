@@ -46,6 +46,14 @@ const routes: Routes = [
     path: 'direccion-pedido',
     loadChildren: () => import('./repartidor/direccion-pedido/direccion-pedido.module').then( m => m.DireccionPedidoPageModule)
   },
+  {
+    path: 'nuevo-pedido',
+    loadChildren: () => import('./repartidor/nuevo-pedido/nuevo-pedido.module').then( m => m.NuevoPedidoPageModule)
+  },
+  {
+    path: 'cobros',
+    loadChildren: () => import('./repartidor/cobros/cobros.module').then( m => m.CobrosPageModule)
+  },
 
 
 

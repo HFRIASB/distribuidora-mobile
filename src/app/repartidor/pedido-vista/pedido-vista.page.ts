@@ -12,7 +12,6 @@ export class PedidoVistaPage implements OnInit {
   isModalOpen = false;
 
   pedido = 
-  [
     { 
       pedido_id: 1,
       pedido_estado: "entregado",
@@ -45,23 +44,6 @@ export class PedidoVistaPage implements OnInit {
                  }
                   ]
     }
-  ]
-
-  products= [
-    { producto: {
-                producto_id:1,
-                producto_nombre:"aceite"
-                }, 
-      cantidad: 1, 
-    },
-    {
-      producto: {
-                producto_id:2,
-                producto_nombre:"chesco"
-                 }, 
-     cantidad: 1,
-    }
-     ]
 
     @ViewChild('map')
     mapRef: ElementRef<HTMLElement>;

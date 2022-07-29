@@ -10,7 +10,7 @@
 <ion-content>
 
 
-  <ion-item *ngFor="let pedido of pedido">
+  <ion-item>
     <ion-grid>
       <ion-row class="datosPedido">
         <ion-label>Cliente: </ion-label>
@@ -45,7 +45,7 @@
       <ion-label>Productos Solicitados </ion-label>
     </div>
 
-    <ion-item *ngFor="let produ of products">
+    <ion-item *ngFor="let produ of pedido.productos">
       <ion-grid class="grid">
 
         <ion-row>

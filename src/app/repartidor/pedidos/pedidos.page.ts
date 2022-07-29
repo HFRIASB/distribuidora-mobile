@@ -91,8 +91,16 @@ export class PedidosPage implements OnInit {
     });
   }
 
-  goProducto(){
-    this.router.navigate(['/home'],
+  goNPedido(){
+    this.router.navigate(['/nuevo-pedido'],
+    {
+      relativeTo: this.route,
+      replaceUrl: true
+    });
+  }
+
+  goCobros(){
+    this.router.navigate(['/cobros'],
     {
       relativeTo: this.route,
       replaceUrl: true
@@ -101,6 +109,11 @@ export class PedidosPage implements OnInit {
 
 
   goCerrarSesion(){
+    this.router.navigate(['/login'],
+    {
+      relativeTo: this.route,
+      replaceUrl: true
+    });
   
 }
 

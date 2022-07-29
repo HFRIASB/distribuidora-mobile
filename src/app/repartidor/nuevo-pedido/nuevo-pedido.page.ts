@@ -4,24 +4,26 @@ import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 
 
-
-
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.page.html',
-  styleUrls: ['./home.page.scss'],
+  selector: 'app-nuevo-pedido',
+  templateUrl: './nuevo-pedido.page.html',
+  styleUrls: ['./nuevo-pedido.page.scss'],
 })
-export class HomePage implements OnInit {
-  item_qty: any;
+export class NuevoPedidoPage implements OnInit {
+
+  buscado: string;
+
   isModalOpen = false;
+
   image = "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/fa33b82/2147483647/resize/300x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2Fhomer.png"
-  icon = "../../../assets/icon/add-to-cart.png"
+
   productos = [
     { producto_id: 1, producto_nombre: "aceite", producto_presentacion: 1, producto_stock: 15, categoria_id: 1, unidad_id: 1, producto_foto: this.image },
     { producto_id: 2, producto_nombre: "refresco", producto_presentacion: 2, producto_stock: 10, categoria_id: 2, unidad_id: 2, producto_foto: this.image },
     { producto_id: 3, producto_nombre: "leche", producto_presentacion: 1, producto_stock: 15, categoria_id: 1, unidad_id: 1, producto_foto: this.image },
     { producto_id: 4, producto_nombre: "pollo", producto_presentacion: 2, producto_stock: 10, categoria_id: 2, unidad_id: 2, producto_foto: this.image }
   ]
+
   carrito = {
     cliente_id: null,
     direccion_id: null,
@@ -30,33 +32,14 @@ export class HomePage implements OnInit {
     entrega_fecha: null,
     productos: []
   }
-  direcciones = [
-    { direccion_id: 1, direccion_nombre: 'Caseta San Martin', direccion_latitud: "-17.401472", direccion_longitud: "-66.155927" },
-    { direccion_id: 2, direccion_nombre: 'Casa Laguna', direccion_latitud: "-17.411392", direccion_longitud: "-66.144056" },
-    { direccion_id: 3, direccion_nombre: 'Caseta Colcapirhua', direccion_latitud: "-17.390750", direccion_longitud: "-66.228295" }
-  ]
 
-  abrirCarrito(isOpen: boolean) {
-    if (this.carrito.productos.length > 0) {
-      this.isModalOpen = isOpen;
-    } else {
-      if (this.isModalOpen == false) {
-        this.presentToast("Por favor elija un Producto", 'danger');
-      } else {
-        this.isModalOpen = isOpen;
-      }
-    }
-
-  }
   hacerPedido(date) {
     this.carrito.entrega_fecha = date;
     console.log(this.carrito);
   }
+ 
 
-
-  constructor(private router: Router, public toastController: ToastController, private alertController: AlertController, private route: ActivatedRoute,) {
-    this.carrito.cliente_id = 1;
-  }
+  constructor(private router: Router, private route: ActivatedRoute, public toastController: ToastController, private alertController: AlertController) { }
 
   ngOnInit() {
   }
@@ -114,33 +97,22 @@ export class HomePage implements OnInit {
   eliminarProducto(item) {
     this.carrito.productos.splice(this.carrito.productos.findIndex(producto => producto === item), 1);
   }
-  seleccionarDireccion(event) {
-    this.carrito.direccion_id = event.detail.value;
-  }
-  goDirecciones() {
-    this.router.navigate(['/direcciones'], { relativeTo: this.route, replaceUrl: true })
+
+  goPedidos(){
+    this.router.navigate(['/pedidos'],
+    {
+      relativeTo: this.route,
+      replaceUrl: true
+    });
   }
 
-  goMisPedidos(){
-    this.router.navigate(['/pedido-cliente'],
-      {
-        relativeTo: this.route,
-        replaceUrl: true
-      });
+  goCobros(){
+    this.router.navigate(['/cobros'],
+    {
+      relativeTo: this.route,
+      replaceUrl: true
+    });
   }
-
-  goCerrarSesion(){
-    this.router.navigate(['/login'],
-      {
-        relativeTo: this.route,
-        replaceUrl: true
-      });
-  }
-
-  customAlertOptions = {
-    header: 'Selecione la ubicación de entrega',
-    translucent: true
-  };
 
 
 }
