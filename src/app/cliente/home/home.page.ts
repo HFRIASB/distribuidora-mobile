@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { Producto } from 'src/app/models/producto';
+import { ProductoService } from 'src/app/services/producto.service';
 
 
 
@@ -14,14 +16,8 @@ import { AlertController } from '@ionic/angular';
 export class HomePage implements OnInit {
   item_qty: any;
   isModalOpen = false;
-  image = "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/fa33b82/2147483647/resize/300x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2Fhomer.png"
   icon = "../../../assets/icon/add-to-cart.png"
-  productos = [
-    { producto_id: 1, producto_nombre: "aceite", producto_presentacion: 1, producto_stock: 15, categoria_id: 1, unidad_id: 1, producto_foto: this.image },
-    { producto_id: 2, producto_nombre: "refresco", producto_presentacion: 2, producto_stock: 10, categoria_id: 2, unidad_id: 2, producto_foto: this.image },
-    { producto_id: 3, producto_nombre: "leche", producto_presentacion: 1, producto_stock: 15, categoria_id: 1, unidad_id: 1, producto_foto: this.image },
-    { producto_id: 4, producto_nombre: "pollo", producto_presentacion: 2, producto_stock: 10, categoria_id: 2, unidad_id: 2, producto_foto: this.image }
-  ]
+  productos: Producto[]=[];
   carrito = {
     cliente_id: null,
     direccion_id: null,
@@ -54,8 +50,12 @@ export class HomePage implements OnInit {
   }
 
 
-  constructor(private router: Router, public toastController: ToastController, private alertController: AlertController, private route: ActivatedRoute,) {
+  constructor(private router: Router, 
+    public toastController: ToastController, 
+    private alertController: AlertController, 
+    private route: ActivatedRoute, private productoService: ProductoService) {
     this.carrito.cliente_id = 1;
+    this.getProductos();
   }
 
   ngOnInit() {
@@ -141,6 +141,14 @@ export class HomePage implements OnInit {
     header: 'Selecione la ubicación de entrega',
     translucent: true
   };
+
+  getProductos(){
+
+    this.productoService.getTodoProductos()
+      .subscribe((productos: Producto[])=>{
+        this.productos= productos;
+      })
+  }
 
 
 }

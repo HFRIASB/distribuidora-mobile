@@ -59,11 +59,11 @@
             <ion-row>
               <ion-col>
                 <ion-thumbnail>
-                  <ion-img [src]="product.producto_foto"></ion-img>
+                  <ion-img [src]="product.foto_prod"></ion-img>
                 </ion-thumbnail>
               </ion-col>
               <ion-col>
-                <ion-label>{{product.producto_nombre}} </ion-label>
+                <ion-label>{{product.nombre_prod}} </ion-label>
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -71,7 +71,7 @@
 
         <div class="icon-div">
           <div class="icon">
-            <ion-icon (click)="addCart(product.producto_id, product.producto_nombre)" name="cart-outline" color="primary"></ion-icon>
+            <ion-icon (click)="addCart(product.id_prod, product.nombre_prod)" name="cart-outline" color="primary"></ion-icon>
           </div>
         </div>
 

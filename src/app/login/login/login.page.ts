@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Usuario } from 'src/app/models/usuario';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,7 @@ export class LoginPage implements OnInit {
 
 
   constructor(
-    private router: Router, private route: ActivatedRoute
+    private router: Router, private route: ActivatedRoute, private authService:AuthService  
   ) { }
 
   ngOnInit() {
@@ -27,7 +29,27 @@ export class LoginPage implements OnInit {
   }
 
   login(form) {
-    let user = {
+    this.authService.validarUsuario({correo_usu:form.value.usuario, password_usu: form.value.password})
+      .subscribe(usuarioToken=>{
+      //  console.log(usuarioToken);
+        this.authService.getRol(usuarioToken.id_usu)
+          .then((user: Usuario)=>{
+            if (user.rol.nombre_rol == "Cliente") {
+              this.router.navigate(['/home'],
+                {
+                  relativeTo: this.route,
+                  replaceUrl: true
+                });
+            } else if (user.rol.nombre_rol == "Repartidor" || user.rol.nombre_rol == "Administrador") {
+              this.router.navigate(['/pedidos'],
+                {
+                  relativeTo: this.route,
+                  replaceUrl: true
+                });
+          }})
+      })
+    }
+   /* let user = {
       id: 1,
       accessToken: "asdadfsargedfh",
       rol: "cliente"
@@ -45,8 +67,8 @@ export class LoginPage implements OnInit {
           relativeTo: this.route,
           replaceUrl: true
         });
-    }
-  }
+    }*/
+  
 
   btnCliente() {
     this.router.navigate(['/home'],
@@ -63,5 +85,7 @@ export class LoginPage implements OnInit {
       replaceUrl: true
     });
   }
+
+
 
 }

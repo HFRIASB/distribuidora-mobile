@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Usuario } from 'src/app/models/usuario';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -12,13 +14,31 @@ export class RegisterPage implements OnInit {
 
 
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
 
   ngOnInit() {
   }
   register(form) {
-    console.log(form.value)
-    this.router.navigate(['/home'])
+    console.log(form.value);
+    let usuario= {
+    nombre_usu: form.value.nombre,
+    apPaterno_usu: form.value.apepat,
+    apMaterno_usu: form.value.apemat,
+    nroDocu_usu: form.value.ci,
+    sexo_usu: form.value.sexo,
+    celular_usu: form.value.celular,
+    correo_usu: form.value.correo,
+    password_usu: form.value.password,
+    fRegistro_usu: new Date(),
+    rol: 2//////////////Corregir con back
+    }
+    this.authService.registrarUsuario(usuario)
+    .subscribe(datosResponce =>{
+      this.router.navigate(['/home']);
+    },(error)=>{
+      //toast"error"
+    })
+ 
   }
 
   goBack() {
