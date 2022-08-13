@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-pedido-cliente',
@@ -77,8 +79,11 @@ export class PedidoClientePage implements OnInit {
     }
   ]
 
+  handlerMessage = '';
+  roleMessage = '';
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+
+  constructor(private router: Router, private route: ActivatedRoute,  private alertController: AlertController,public toastController: ToastController ) { }
 
   ngOnInit() {
   }
@@ -97,6 +102,52 @@ export class PedidoClientePage implements OnInit {
       relativeTo: this.route,
       replaceUrl: true
     });
+  }
+
+  async presentToast(texto, color) {
+    const toast = await this.toastController.create({
+      message: texto,
+      duration: 2000,
+      color: color,
+    });
+    toast.present();
+  }
+
+
+  async goCerrarSesion(){
+    const alert = await this.alertController.create({
+      header: '¿Desea salir de su cuenta?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            this.handlerMessage = 'Alert canceled';
+          },
+        },
+        {
+          text: 'Confirmar',
+          role: 'confirm',
+          handler: () => {
+            this.handlerMessage = 'Alert confirmed';
+  
+            this.router.navigate(['/login'],
+            {
+              relativeTo: this.route,
+              replaceUrl: true
+            });
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+
+
+
+    const { role } = await alert.onDidDismiss();
+    this.roleMessage = `Dismissed with role: ${role}`;
+
   }
   
 

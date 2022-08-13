@@ -4,6 +4,7 @@ import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
 import { ToastController } from '@ionic/angular';
 
+
 @Component({
   selector: 'app-nueva-direccion',
   templateUrl: './nueva-direccion.page.html',
@@ -125,6 +126,11 @@ export class NuevaDireccionPage implements OnInit {
 
   goBack() {
     this.router.navigate(['/direcciones'], { relativeTo: this.route, replaceUrl: true })
+  }
+
+  guardarNuevaDireccion(){
+    this.presentToast("Dirección agregada exitosamente", 'primary');
+
   }
 
 }

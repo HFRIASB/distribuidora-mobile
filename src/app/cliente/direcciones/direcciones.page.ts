@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-direcciones',
@@ -16,7 +18,10 @@ export class DireccionesPage implements OnInit {
 
   image = "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/fa33b82/2147483647/resize/300x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2Fhomer.png"
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  handlerMessage = '';
+  roleMessage = '';
+
+  constructor(private router: Router, private route: ActivatedRoute, private alertController: AlertController,public toastController: ToastController) {
 
   }
 
@@ -53,6 +58,42 @@ export class DireccionesPage implements OnInit {
         relativeTo: this.route,
         replaceUrl: true
       });
+  }
+
+  async goCerrarSesion(){
+    const alert = await this.alertController.create({
+      header: '¿Desea salir de su cuenta?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            this.handlerMessage = 'Alert canceled';
+          },
+        },
+        {
+          text: 'Confirmar',
+          role: 'confirm',
+          handler: () => {
+            this.handlerMessage = 'Alert confirmed';
+  
+            this.router.navigate(['/login'],
+            {
+              relativeTo: this.route,
+              replaceUrl: true
+            });
+          },
+        },
+      ],
+    });
+  
+    await alert.present();
+  
+  
+  
+    const { role } = await alert.onDidDismiss();
+    this.roleMessage = `Dismissed with role: ${role}`;
+  
   }
 
 }

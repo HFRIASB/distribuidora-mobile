@@ -41,7 +41,7 @@
       <ion-buttons slot="start" padding>
         <ion-menu-button class="icon" slot="start"></ion-menu-button>
       </ion-buttons>
-      
+
       <ion-title>Productos</ion-title>
       <ion-buttons slot="end" padding>
         <ion-icon (click)="abrirCarrito(true)" class="icon" name="cart"></ion-icon>
@@ -57,13 +57,19 @@
         <div>
           <ion-grid>
             <ion-row>
-              <ion-col>
+              <ion-col class="test">
                 <ion-thumbnail>
                   <ion-img [src]="product.foto_prod"></ion-img>
                 </ion-thumbnail>
               </ion-col>
-              <ion-col>
-                <ion-label>{{product.nombre_prod}} </ion-label>
+              <ion-col class="color">
+                <ion-row >
+                  <ion-label class="wrap">{{product.nombre_prod}} </ion-label>
+                </ion-row>
+                <ion-row>
+                  <ion-label color="medium">{{product.uniMedida_prod}} </ion-label>
+                </ion-row>
+
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -71,7 +77,8 @@
 
         <div class="icon-div">
           <div class="icon">
-            <ion-icon (click)="addCart(product.id_prod, product.nombre_prod)" name="cart-outline" color="primary"></ion-icon>
+            <ion-icon (click)="addCart(product)" name="cart-outline" color="primary">
+            </ion-icon>
           </div>
         </div>
 
@@ -91,14 +98,14 @@
         </ion-header>
         <ion-content class="ion-padding">
 
-          <ion-item *ngFor="let item of carrito.productos">
+          <ion-item *ngFor="let item of orden.ordenProducto">
             <ion-grid>
               <ion-row>
                 <ion-col size="8">
-                  <ion-label>{{item.producto_nombre}} </ion-label>
+                  <ion-label>{{item.producto.nombre_prod}} </ion-label>
                 </ion-col>
                 <ion-col size="2">
-                  <ion-label>x{{item.cantidad}} </ion-label>
+                  <ion-label>x{{item.cantidad_op}} </ion-label>
                 </ion-col>
                 <ion-col>
                   <ion-icon (click)="eliminarProducto(item)" name="trash-sharp" color="danger"></ion-icon>
@@ -106,7 +113,7 @@
               </ion-row>
             </ion-grid>
           </ion-item>
-          
+
           <ion-item>
             <ion-grid>
               <ion-row>
@@ -116,15 +123,15 @@
               </ion-row>
               <ion-row>
                 <ion-item class="input">
-                  <ion-input value="{{ date | date: 'dd.MM.yyyy' }}" id="date" placeholder="Selecione una Fecha de Entrega">
+                  <ion-input value="{{ date | date: 'dd.MM.yyyy' }}" id="date"
+                    placeholder="Selecione una Fecha de Entrega">
                   </ion-input>
                 </ion-item>
                 <ion-popover trigger="date" size="cover">
                   <ng-template>
-                    <ion-datetime presentation="date" [(ngModel)]="date" [showDefaultButtons]="true"
-                    doneText="Aceptar"
-                    cancelText="Cancelar">
-                      
+                    <ion-datetime presentation="date" [(ngModel)]="date" [showDefaultButtons]="true" doneText="Aceptar"
+                      cancelText="Cancelar">
+
                     </ion-datetime>
                   </ng-template>
                 </ion-popover>
@@ -136,9 +143,10 @@
                 <ion-item class="input" placeholder="Selecione Dirección">
 
 
-                  <ion-select [(ngModel)]="carrito.direccion_id" (ionChange)='seleccionarDireccion($event)' placeholder="Selecione su Dirección" [interfaceOptions]="customAlertOptions" interface="alert">
-                    <ion-select-option *ngFor="let direccion of direcciones" value="{{direccion.direccion_id}}">
-                      {{ direccion.direccion_nombre }}
+                  <ion-select [(ngModel)]="orden.direccion" (ionChange)='seleccionarDireccion($event)'
+                    placeholder="Selecione su Dirección" [interfaceOptions]="customAlertOptions" interface="alert">
+                    <ion-select-option *ngFor="let direccion of direcciones" value="{{direccion.id_direc}}">
+                      {{ direccion.nombre_direc }}
                     </ion-select-option>
                   </ion-select>
 
@@ -146,7 +154,7 @@
               </ion-row>
               <ion-row>
                 <div class="boton">
-                  <ion-button [disabled]="this.carrito.productos.length<1" shape="round" color="primary"
+                  <ion-button [disabled]="this.orden.ordenProducto.length<1" shape="round" color="primary"
                     (click)="hacerPedido(date)" class="textBoton">REALIZAR ENTREGA</ion-button>
                 </div>
               </ion-row>

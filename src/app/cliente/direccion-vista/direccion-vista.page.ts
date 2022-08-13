@@ -2,6 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
+import { AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-direccion-vista',
@@ -19,7 +21,7 @@ export class DireccionVistaPage implements OnInit {
       direccion_longitud: -66.155927
     };
 
-  @ViewChild('map')
+  @ViewChild('map1')
   mapRef: ElementRef<HTMLElement>;
   newMap: GoogleMap;
   center: any = {
@@ -29,8 +31,10 @@ export class DireccionVistaPage implements OnInit {
     //lng: -66.155927,
   };
   markerId: string;
+  handlerMessage = '';
+  roleMessage = '';
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute, private alertController: AlertController,public toastController: ToastController, ) { }
 
   ngOnInit() {
   }
@@ -74,5 +78,45 @@ export class DireccionVistaPage implements OnInit {
 
   goBack() {
     this.router.navigate(['/direcciones'], { relativeTo: this.route, replaceUrl: true })
+  }
+
+  async presentToast(texto, color) {
+    const toast = await this.toastController.create({
+      message: texto,
+      duration: 2000,
+      color: color,
+    });
+    toast.present();
+  }
+
+  async eliminarDireccion(){
+    const alert = await this.alertController.create({
+      header: '¿Desea eliminar la dirección?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            this.handlerMessage = 'Alert canceled';
+          },
+        },
+        {
+          text: 'Confirmar',
+          role: 'confirm',
+          handler: () => {
+            this.handlerMessage = 'Alert confirmed';
+            this.presentToast("Dirección eliminada exitosamente", 'primary');
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+
+
+
+    const { role } = await alert.onDidDismiss();
+    this.roleMessage = `Dismissed with role: ${role}`;
+
   }
 }

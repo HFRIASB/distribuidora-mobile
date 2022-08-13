@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { Direccion } from 'src/app/models/direccion';
+import { Orden } from 'src/app/models/orden';
+import { OrdenProducto } from 'src/app/models/orden-producto';
 import { Producto } from 'src/app/models/producto';
+import { Usuario } from 'src/app/models/usuario';
+import { AuthService } from 'src/app/services/auth.service';
+import { OrdenProductoService } from 'src/app/services/orden-producto.service';
+import { OrdenService } from 'src/app/services/orden.service';
 import { ProductoService } from 'src/app/services/producto.service';
-
-
-
 
 @Component({
   selector: 'app-home',
@@ -17,23 +21,24 @@ export class HomePage implements OnInit {
   item_qty: any;
   isModalOpen = false;
   icon = "../../../assets/icon/add-to-cart.png"
-  productos: Producto[]=[];
-  carrito = {
-    cliente_id: null,
-    direccion_id: null,
-    venta_ticomprobante: null,
-    venta_fecha: new Date(),
-    entrega_fecha: null,
-    productos: []
+  productos: Producto[] = [];
+
+  orden = {
+    fVenta_ord: null,
+
+    fEntrega_ord: new Date(),
+
+    usuario: null,
+
+    direccion: null,
+
+    ordenProducto: []
   }
-  direcciones = [
-    { direccion_id: 1, direccion_nombre: 'Caseta San Martin', direccion_latitud: "-17.401472", direccion_longitud: "-66.155927" },
-    { direccion_id: 2, direccion_nombre: 'Casa Laguna', direccion_latitud: "-17.411392", direccion_longitud: "-66.144056" },
-    { direccion_id: 3, direccion_nombre: 'Caseta Colcapirhua', direccion_latitud: "-17.390750", direccion_longitud: "-66.228295" }
-  ]
+
+  direcciones: Direccion[] = [];
 
   abrirCarrito(isOpen: boolean) {
-    if (this.carrito.productos.length > 0) {
+    if (this.orden.ordenProducto.length > 0) {
       this.isModalOpen = isOpen;
     } else {
       if (this.isModalOpen == false) {
@@ -45,24 +50,61 @@ export class HomePage implements OnInit {
 
   }
   hacerPedido(date) {
-    this.carrito.entrega_fecha = date;
-    console.log(this.carrito);
+    this.orden.fEntrega_ord = new Date(date);
+    const orden = {
+      fVenta_ord: new Date(),
+
+      fEntrega_ord: this.orden.fEntrega_ord,
+
+      usuario: this.orden.usuario,
+
+      direccion: this.orden.direccion
+    }
+    this.ordenService.postOrden(orden).subscribe((data: Orden) => {
+      //console.log(this.orden.ordenProducto)
+      let id_ord = data.id_ord
+      this.orden.ordenProducto.forEach((element:OrdenProducto) => {
+        let producto = {
+          cantidad_op: element.cantidad_op,
+
+          orden: data,
+
+          producto: element.producto.id_prod
+        }
+        console.log(producto)
+        this.ordenProductoService.postOrdenProducto(producto).subscribe(data1 => {
+        })
+      });
+    })
+    //console.log(this.orden);
   }
 
+  handlerMessage = '';
+  roleMessage = '';
 
-  constructor(private router: Router, 
-    public toastController: ToastController, 
-    private alertController: AlertController, 
-    private route: ActivatedRoute, private productoService: ProductoService) {
-    this.carrito.cliente_id = 1;
+  constructor(private router: Router,
+    public toastController: ToastController,
+    private alertController: AlertController,
+    private route: ActivatedRoute,
+    private productoService: ProductoService,
+    private ordenService: OrdenService,
+    private ordenProductoService: OrdenProductoService,
+    private authService: AuthService) {
+    this.orden.ordenProducto = []
     this.getProductos();
+    this.route.params.subscribe(params => {
+      this.orden.usuario = Number(params.idUsuario);
+      this.authService.getUsuarioDireccion(this.orden.usuario).subscribe((params: Usuario) => {
+        this.direcciones = params.direccion;
+      })
+    });
   }
 
   ngOnInit() {
   }
 
-  addCart(id: number, producto_nombre: string) {
-    this.presentAlert(id, producto_nombre).then(() => {
+  addCart(producto: Producto) {
+    this.presentAlert(producto).then(() => {
     }).catch(e => { });
   }
 
@@ -75,7 +117,7 @@ export class HomePage implements OnInit {
     toast.present();
   }
 
-  async presentAlert(id: number, producto_nombre: string) {
+  async presentAlert(producto: Producto) {
     const alert = await this.alertController.create({
       header: 'Por favor ingrese una cantidad',
       buttons: [
@@ -83,8 +125,14 @@ export class HomePage implements OnInit {
           text: 'AÑADIR',
           handler: (data) => {
             if (data.cantidad > 0 && data.cantidad < 101) {
-              let addProduct = { producto_id: id, cantidad: data.cantidad, producto_nombre: producto_nombre }
-              this.carrito.productos.push(addProduct);
+              this.orden.ordenProducto.push({
+                producto: producto,
+                cantidad_op: data.cantidad
+              })
+              /* let ordenProducto: OrdenProducto = new OrdenProducto()
+               ordenProducto.producto = producto;
+               ordenProducto.cantidad_op = data.cantidad;
+               this.orden.ordenProducto.push(ordenProducto);*/
               this.presentToast("Producto añadido exitosamente", 'primary');
             } else {
               this.presentToast("Error: Elija un número mayor a 0 y menor a 100", 'danger');
@@ -112,16 +160,16 @@ export class HomePage implements OnInit {
   }
 
   eliminarProducto(item) {
-    this.carrito.productos.splice(this.carrito.productos.findIndex(producto => producto === item), 1);
+    this.orden.ordenProducto.splice(this.orden.ordenProducto.findIndex(producto => producto === item), 1);
   }
   seleccionarDireccion(event) {
-    this.carrito.direccion_id = event.detail.value;
+    this.orden.direccion = event.detail.value;
   }
   goDirecciones() {
     this.router.navigate(['/direcciones'], { relativeTo: this.route, replaceUrl: true })
   }
 
-  goMisPedidos(){
+  goMisPedidos() {
     this.router.navigate(['/pedido-cliente'],
       {
         relativeTo: this.route,
@@ -129,12 +177,38 @@ export class HomePage implements OnInit {
       });
   }
 
-  goCerrarSesion(){
-    this.router.navigate(['/login'],
-      {
-        relativeTo: this.route,
-        replaceUrl: true
-      });
+  async goCerrarSesion() {
+    const alert = await this.alertController.create({
+      header: '¿Desea salir de su cuenta?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            this.handlerMessage = 'Alert canceled';
+          },
+        },
+        {
+          text: 'Confirmar',
+          role: 'confirm',
+          handler: () => {
+            this.handlerMessage = 'Alert confirmed';
+
+            this.router.navigate(['/login'],
+              {
+                relativeTo: this.route,
+                replaceUrl: true
+              });
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+
+    const { role } = await alert.onDidDismiss();
+    this.roleMessage = `Dismissed with role: ${role}`;
+
   }
 
   customAlertOptions = {
@@ -142,11 +216,11 @@ export class HomePage implements OnInit {
     translucent: true
   };
 
-  getProductos(){
+  getProductos() {
 
     this.productoService.getTodoProductos()
-      .subscribe((productos: Producto[])=>{
-        this.productos= productos;
+      .subscribe((productos: Producto[]) => {
+        this.productos = productos;
       })
   }
 

@@ -31,11 +31,10 @@ export class LoginPage implements OnInit {
   login(form) {
     this.authService.validarUsuario({correo_usu:form.value.usuario, password_usu: form.value.password})
       .subscribe(usuarioToken=>{
-      //  console.log(usuarioToken);
         this.authService.getRol(usuarioToken.id_usu)
           .then((user: Usuario)=>{
             if (user.rol.nombre_rol == "Cliente") {
-              this.router.navigate(['/home'],
+              this.router.navigate(['/home', user.id_usu],
                 {
                   relativeTo: this.route,
                   replaceUrl: true
@@ -49,43 +48,6 @@ export class LoginPage implements OnInit {
           }})
       })
     }
-   /* let user = {
-      id: 1,
-      accessToken: "asdadfsargedfh",
-      rol: "cliente"
-    };
-
-    if (user.rol == "cliente") {
-      this.router.navigate(['/home'],
-        {
-          relativeTo: this.route,
-          replaceUrl: true
-        });
-    } else if (user.rol == "repartidor") {
-      this.router.navigate(['/pedidos'],
-        {
-          relativeTo: this.route,
-          replaceUrl: true
-        });
-    }*/
-  
-
-  btnCliente() {
-    this.router.navigate(['/home'],
-    {
-      relativeTo: this.route,
-      replaceUrl: true
-    });
-  }
-
-  btnRepartidor() {
-    this.router.navigate(['/pedidos'],
-    {
-      relativeTo: this.route,
-      replaceUrl: true
-    });
-  }
-
 
 
 }

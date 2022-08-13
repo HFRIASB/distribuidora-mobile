@@ -29,6 +29,10 @@ export class AuthService {
         })
     })
   }
+  
+  getUsuarioDireccion(id_user: number){
+    return  this.http.get(`${this.api_url}usuario/direccion/${id_user}`);
+  }
 
   registrarUsuario(usuario){
     return this.http.post(this.api_url+'usuario',usuario);

@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class OrdenService {
 
-  api_url='http://localhost:3000/'
+  api_url='http://localhost:3000/orden'
 
   constructor( private http:HttpClient) { }
 
@@ -19,7 +19,7 @@ export class OrdenService {
   }
 
   postOrden(data){
-
+    return this.http.post(this.api_url, data);
   }
 
   editOrden(data){

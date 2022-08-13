@@ -19,7 +19,7 @@ export class Orden {
 
     descGeneral_ord: number;
 
-    usuario: Usuario;
+    usuario: number;
 
     direccion: Direccion;
 

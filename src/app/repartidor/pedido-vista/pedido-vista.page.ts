@@ -2,6 +2,8 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-pedido-vista',
@@ -55,10 +57,13 @@ export class PedidoVistaPage implements OnInit {
       lng: -66.155927,
     };
     markerId: string;
+    handlerMessage = '';
+    roleMessage = '';
+  
   
 
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router, private route: ActivatedRoute, private alertController: AlertController,public toastController: ToastController) { }
 
   ngOnInit() {
   }
@@ -106,6 +111,50 @@ export class PedidoVistaPage implements OnInit {
  
   goBack() {
     this.router.navigate(['/pedidos'], { relativeTo: this.route, replaceUrl: true })
+  }
+
+  async presentToast(texto, color) {
+    const toast = await this.toastController.create({
+      message: texto,
+      duration: 2000,
+      color: color,
+    });
+    toast.present();
+  }
+
+  btnEntregado(){
+    this.presentToast("Pedido Entregado Exitosamente", 'primary');
+  }
+
+  async btnCancelado(){
+    const alert = await this.alertController.create({
+      header: '¿Esta seguro que desea cancelar el pedido?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            this.handlerMessage = 'Alert canceled';
+          },
+        },
+        {
+          text: 'Confirmar',
+          role: 'confirm',
+          handler: () => {
+            this.handlerMessage = 'Alert confirmed';
+            this.presentToast("Pedido Cancelado", 'primary');
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+
+
+
+    const { role } = await alert.onDidDismiss();
+    this.roleMessage = `Dismissed with role: ${role}`;
+
   }
 
 }
