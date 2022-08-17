@@ -45,3 +45,28 @@
 .marginButton{
     margin-bottom: 50px;
 }
+
+.datosPedido{
+    font-weight: bold;
+    margin-left: 15px;
+    margin-top: 8px;
+}
+
+.datosCliente{
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+.estadoPedido{
+    color: green;
+}
+
+.wrap{
+    white-space: normal;
+}
+
+.flexContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}

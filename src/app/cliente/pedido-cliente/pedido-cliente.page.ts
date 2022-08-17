@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-pedido-cliente',
@@ -12,7 +13,9 @@ export class PedidoClientePage implements OnInit {
 
   image = "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/fa33b82/2147483647/resize/300x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2Fhomer.png"
  
-  pedidos = [
+  pedidos=[];
+
+ /* pedidos = [
     { 
       pedido_id: 1,
       pedido_estado: "entregado",
@@ -77,13 +80,24 @@ export class PedidoClientePage implements OnInit {
         }
       ]
     }
-  ]
+  ]*/
+  user_id=null;
 
   handlerMessage = '';
   roleMessage = '';
 
-
-  constructor(private router: Router, private route: ActivatedRoute,  private alertController: AlertController,public toastController: ToastController ) { }
+  constructor(private router: Router, 
+    private route: ActivatedRoute,  
+    private alertController: AlertController,
+    public toastController: ToastController,
+    private authService: AuthService ) {
+      this.route.params.subscribe(params => {
+        //console.log(params)
+        this.user_id = Number(params.id);
+        this.authService.getUsuarioOrden(this.user_id,"Pendiente").subscribe((pedidos:any[]) => {
+          this.pedidos=pedidos;
+        })
+    }); }
 
   ngOnInit() {
   }
@@ -98,6 +112,15 @@ export class PedidoClientePage implements OnInit {
 
   goDirecciones(){
     this.router.navigate(['/direcciones'],
+    {
+      relativeTo: this.route,
+      replaceUrl: true
+    });
+  }
+
+  abrirPedido(pedido){
+    console.log(pedido)
+    this.router.navigate(['/detalle-pedido',this.user_id, pedido.id_ord],
     {
       relativeTo: this.route,
       replaceUrl: true
@@ -142,8 +165,6 @@ export class PedidoClientePage implements OnInit {
     });
 
     await alert.present();
-
-
 
     const { role } = await alert.onDidDismiss();
     this.roleMessage = `Dismissed with role: ${role}`;

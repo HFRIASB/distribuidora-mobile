@@ -25,62 +25,13 @@ export class HomePage implements OnInit {
 
   orden = {
     fVenta_ord: null,
-
     fEntrega_ord: new Date(),
-
     usuario: null,
-
     direccion: null,
-
     ordenProducto: []
   }
 
   direcciones: Direccion[] = [];
-
-  abrirCarrito(isOpen: boolean) {
-    if (this.orden.ordenProducto.length > 0) {
-      this.isModalOpen = isOpen;
-    } else {
-      if (this.isModalOpen == false) {
-        this.presentToast("Por favor elija un Producto", 'danger');
-      } else {
-        this.isModalOpen = isOpen;
-      }
-    }
-
-  }
-  hacerPedido(date) {
-    this.orden.fEntrega_ord = new Date(date);
-    const orden = {
-      fVenta_ord: new Date(),
-
-      fEntrega_ord: this.orden.fEntrega_ord,
-
-      usuario: this.orden.usuario,
-
-      direccion: this.orden.direccion
-    }
-    this.ordenService.postOrden(orden).subscribe((data: Orden) => {
-      //console.log(this.orden.ordenProducto)
-      let id_ord = data.id_ord
-      this.orden.ordenProducto.forEach((element:OrdenProducto) => {
-        let producto = {
-          cantidad_op: element.cantidad_op,
-
-          orden: data,
-
-          producto: element.producto.id_prod
-        }
-        console.log(producto)
-        this.ordenProductoService.postOrdenProducto(producto).subscribe(data1 => {
-        })
-      });
-    })
-    //console.log(this.orden);
-  }
-
-  handlerMessage = '';
-  roleMessage = '';
 
   constructor(private router: Router,
     public toastController: ToastController,
@@ -102,6 +53,60 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
   }
+
+
+  abrirCarrito(isOpen: boolean) {
+    if (this.orden.ordenProducto.length > 0) {
+      this.isModalOpen = isOpen;
+    } else {
+      if (this.isModalOpen == false) {
+        this.presentToast("Por favor elija un Producto", 'danger');
+      } else {
+        this.isModalOpen = isOpen;
+      }
+    }
+  }
+  hacerPedido(date) {
+    this.orden.fEntrega_ord = new Date(date);
+    const orden = {
+      fVenta_ord: new Date(),
+      fEntrega_ord: this.orden.fEntrega_ord,
+      usuario: this.orden.usuario,
+      direccion: this.orden.direccion
+    }
+    this.ordenService.postOrden(orden).subscribe((data: Orden) => {
+      //console.log(this.orden.ordenProducto)
+      this.orden.ordenProducto.forEach((element: OrdenProducto) => {
+        let producto = {
+          cantidad_op: element.cantidad_op,
+          orden: data,
+          producto: element.producto.id_prod
+        }
+        this.ordenProductoService.postOrdenProducto(producto).subscribe(data1 => {
+        })
+      });
+    })
+    //console.log(this.orden);
+    this.isModalOpen = false;
+    this.alertSaveOrden();
+  }
+
+  async alertSaveOrden() {
+    const alert = await this.alertController.create({
+      header: 'Pedido Realizado',
+      message: 'Pedido realizado exitosamente, será redireccionado a su lista de pedidos',
+      buttons: [{
+        text: "OK",
+        handler: ()=>{
+          this.router.navigate(['/pedido-cliente', this.orden.usuario], { relativeTo: this.route, replaceUrl: true })
+        }
+      }],
+    });
+    await alert.present();
+  }
+
+  handlerMessage = '';
+  roleMessage = '';
 
   addCart(producto: Producto) {
     this.presentAlert(producto).then(() => {

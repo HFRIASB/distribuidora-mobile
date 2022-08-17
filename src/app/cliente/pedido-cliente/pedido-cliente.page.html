@@ -58,23 +58,30 @@
               <ion-label>{{pedido.pedido_estado}} </ion-label>
             </ion-item>
           </ion-list> -->  
-          <ion-grid (click)="abrirPedido()">
+          <ion-grid (click)="abrirPedido(pedido)">
             <ion-row class="nombrePedido">
               <ion-label>Fecha de Pedido: </ion-label>
             </ion-row>
             <ion-row class="fechaPedido">
-              <ion-label>{{pedido.venta_fecha}} </ion-label>
+              <ion-label>{{pedido.fVenta_ord}} </ion-label>
+            </ion-row>
+            <ion-row class="nombrePedido">
+              <ion-label>Fecha de Entrega: </ion-label>
+            </ion-row>
+            <ion-row class="fechaPedido">
+              <ion-label>{{pedido.fEntrega_ord}} </ion-label>
             </ion-row>
             <ion-row class="estadoPedido">
-              <ion-label>{{pedido.pedido_estado}} </ion-label>
+              <ion-label>{{pedido.estado_ord}} </ion-label>
             </ion-row>
           </ion-grid>      
-        </div>
-  
+        </div>  
       </div>
   
     </ion-item>
-  
+  <div class="marginButton">
+
+  </div>
   
   </ion-content>
 

@@ -54,6 +54,10 @@ const routes: Routes = [
     path: 'cobros',
     loadChildren: () => import('./repartidor/cobros/cobros.module').then( m => m.CobrosPageModule)
   },
+  {
+    path: 'detalle-pedido',
+    loadChildren: () => import('./cliente/detalle-pedido/detalle-pedido.module').then( m => m.DetallePedidoPageModule)
+  },
 
 
 

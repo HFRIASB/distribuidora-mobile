@@ -37,4 +37,8 @@ export class AuthService {
   registrarUsuario(usuario){
     return this.http.post(this.api_url+'usuario',usuario);
   }
+
+  getUsuarioOrden(id_user: number, estado: string){
+    return  this.http.get(`${this.api_url}usuario/orden/${id_user}/${estado}`);
+  }
 }

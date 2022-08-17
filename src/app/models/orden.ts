@@ -7,9 +7,9 @@ export class Orden {
 
     id_ord: number;
 
-    fVenta_ord: Date;
+    fVenta_ord: any;
 
-    fEntrega_ord: Date;
+    fEntrega_ord: any;
 
     estado_ord: string;
 
@@ -19,7 +19,7 @@ export class Orden {
 
     descGeneral_ord: number;
 
-    usuario: number;
+    usuario: any;
 
     direccion: Direccion;
 
