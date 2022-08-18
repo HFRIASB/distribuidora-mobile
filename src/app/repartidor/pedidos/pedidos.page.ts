@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { Usuario } from 'src/app/models/usuario';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-pedidos',
@@ -12,6 +14,7 @@ export class PedidosPage implements OnInit {
 
   image = "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/fa33b82/2147483647/resize/300x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2Fhomer.png"
  
+  usuario: Usuario = new Usuario();
 
   pedidos = [
     { 
@@ -83,13 +86,24 @@ export class PedidosPage implements OnInit {
   handlerMessage = '';
   roleMessage = '';
 
-  constructor(private router: Router, private route: ActivatedRoute, private alertController: AlertController,public toastController: ToastController) { }
+  constructor(private router: Router, 
+    private route: ActivatedRoute, 
+    private alertController: AlertController,
+    public toastController: ToastController,
+    private authService: AuthService) { 
+      this.route.params.subscribe(params => {
+        this.authService.getUsuarioById(params.idUsuario).subscribe((user: Usuario)=>{
+          console.log(user)
+          this.usuario = user;
+        })
+      })
+    }
 
   ngOnInit() {
   }
 
   abrirPedido(){
-    this.router.navigate(['/pedido-vista'],
+    this.router.navigate(['/pedido-vista', this.usuario.id_usu.toString()],
     {
       relativeTo: this.route,
       replaceUrl: true

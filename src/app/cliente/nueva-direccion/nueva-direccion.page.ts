@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
 import { ToastController } from '@ionic/angular';
+import { DireccionService } from 'src/app/services/direccion.service';
 
 
 @Component({
@@ -13,6 +14,8 @@ import { ToastController } from '@ionic/angular';
 export class NuevaDireccionPage implements OnInit {
 
   isModalOpen = false;
+
+  id_usuario = null;
 
   @ViewChild('map')
   mapRef: ElementRef<HTMLElement>;
@@ -31,7 +34,15 @@ export class NuevaDireccionPage implements OnInit {
       direccion_longitud: null
     };
 
-  constructor(private router: Router, public toastController: ToastController, private route: ActivatedRoute) { }
+  constructor(private router: Router,
+    public toastController: ToastController,
+    private route: ActivatedRoute,
+    private direccionService: DireccionService) {
+    this.route.params.subscribe(params => {
+      console.log(params)//
+      this.id_usuario = params.idUsuario;//id
+    })
+  }
 
   ngOnInit() {
   }
@@ -100,7 +111,7 @@ export class NuevaDireccionPage implements OnInit {
 
   }
 
-  confirmarUbiacion(isOpen){
+  confirmarUbiacion(isOpen) {
     console.log(this.direccion)
     if (this.direccion.direccion_latitud != null) {
       this.isModalOpen = isOpen;
@@ -109,10 +120,25 @@ export class NuevaDireccionPage implements OnInit {
     }
   }
 
-  guardarUbicaion(form){
-    this.direccion.direccion_nombre=form.value.direccion_nombre;
-    this.direccion.direccion_descripcion=form.value.direccion_descripcion;
+  guardarUbicaion(form) {
+    this.direccion.direccion_nombre = form.value.direccion_nombre;
+    this.direccion.direccion_descripcion = form.value.direccion_descripcion;
     console.log(this.direccion);
+    let nuevaDireccion = {
+      nombre_direc: this.direccion.direccion_nombre,
+      descripcion_direc: this.direccion.direccion_descripcion,
+      lat_direc: this.direccion.direccion_latitud.toString(),
+      lng_direc: this.direccion.direccion_longitud.toString(),
+      usuario: Number(this.id_usuario),
+      //rubro_direc: "Tienda2", AGREGAR DESPUES EN VISTA Y TS
+      //telefono_direc: "4444454", AGREGAR DESPUES EN VISTA Y TS
+    }
+    this.direccionService.postDireccion(nuevaDireccion).subscribe(datos=>{
+      this.presentToast("Dirección agregada exitosamente", 'primary');
+      this.isModalOpen = false
+      // this.router.navigate(['/direcciones', this.id_usuario], { relativeTo: this.route, replaceUrl: true })
+    });
+    console.log("guardado")
   }
 
   async presentToast(texto, color) {
@@ -125,12 +151,7 @@ export class NuevaDireccionPage implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/direcciones'], { relativeTo: this.route, replaceUrl: true })
-  }
-
-  guardarNuevaDireccion(){
-    this.presentToast("Dirección agregada exitosamente", 'primary');
-
+    this.router.navigate(['/direcciones', this.id_usuario], { relativeTo: this.route, replaceUrl: true })
   }
 
 }

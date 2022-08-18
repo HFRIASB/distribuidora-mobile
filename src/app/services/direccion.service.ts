@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DireccionService {
 
-  api_url='http://localhost:3000/'
+  api_url='http://localhost:3000/direccion/'
 
   constructor( private http:HttpClient) { }
 
@@ -15,14 +15,14 @@ export class DireccionService {
   }
 
   postDireccion(data){
-
+    return this.http.post(this.api_url, data);
   }
 
   deleteDireccion(id: number){
 
   }
 
-  getDireccionById(id: number){
-
+  getDireccionById(id: string){
+    return this.http.get(this.api_url+ id);
   }
 }

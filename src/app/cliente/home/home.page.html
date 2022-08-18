@@ -1,8 +1,5 @@
 <ion-menu side="start" menuId="first" contentId="main">
   <ion-header>
-    <!--<ion-toolbar color="primary">
-      <ion-title>OPCIONES</ion-title>
-    </ion-toolbar>-->
   </ion-header>
   <ion-content>
 
@@ -13,7 +10,7 @@
     </div>
     <ion-item class="separador">
       <div class="containerImageNombre">
-        <ion-label class="nombreUsuario" color="medium">Henry Frias Baldelomar</ion-label>
+        <ion-label class="nombreUsuario" color="medium">{{this.orden.usuario.nombre_usu}}</ion-label>
       </div>
     </ion-item>
 
@@ -22,11 +19,11 @@
         <ion-icon name="location-outline" color="primary"></ion-icon>
         <ion-label class="margin">Direcciones</ion-label>
       </ion-item>
-      <ion-item (click)="goMisPedidos()">
+      <ion-item (click)="goMisPedidos()" button="true">
         <ion-icon name="list-outline" color="primary"></ion-icon>
         <ion-label class="margin">Mis Pedidos</ion-label>
       </ion-item>
-      <ion-item (click)="goCerrarSesion()">
+      <ion-item (click)="goCerrarSesion()" button="true">
         <ion-icon name="exit-outline" color="primary"></ion-icon>
         <ion-label class="margin">Cerrar Sesion</ion-label>
       </ion-item>

@@ -22,18 +22,19 @@ export class HomePage implements OnInit {
   isModalOpen = false;
   icon = "../../../assets/icon/add-to-cart.png"
   productos: Producto[] = [];
+ // id_usuario = null;//id
+  direcciones: Direccion[] = [];
 
   orden = {
     fVenta_ord: null,
     fEntrega_ord: new Date(),
-    usuario: null,
+    usuario: new Usuario(),
     direccion: null,
     ordenProducto: []
   }
 
-  direcciones: Direccion[] = [];
-
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     public toastController: ToastController,
     private alertController: AlertController,
     private route: ActivatedRoute,
@@ -41,19 +42,25 @@ export class HomePage implements OnInit {
     private ordenService: OrdenService,
     private ordenProductoService: OrdenProductoService,
     private authService: AuthService) {
-    this.orden.ordenProducto = []
+    this.orden.ordenProducto = [];
     this.getProductos();
     this.route.params.subscribe(params => {
-      this.orden.usuario = Number(params.idUsuario);
-      this.authService.getUsuarioDireccion(this.orden.usuario).subscribe((params: Usuario) => {
-        this.direcciones = params.direccion;
+      //console.log(params)//
+      //this.id_usuario = params.idUsuario;//id
+      //this.orden.usuario = Number(params.idUsuario);
+      this.authService.getUsuarioDireccion(params.idUsuario).subscribe((params: Direccion[]) => {
+        this.direcciones = params;
+       // console.log(this.orden)//
+      })
+      this.authService.getUsuarioById(params.idUsuario).subscribe((user: Usuario)=>{
+        console.log(user)
+        this.orden.usuario = user;
       })
     });
   }
 
   ngOnInit() {
   }
-
 
   abrirCarrito(isOpen: boolean) {
     if (this.orden.ordenProducto.length > 0) {
@@ -66,16 +73,16 @@ export class HomePage implements OnInit {
       }
     }
   }
+
   hacerPedido(date) {
     this.orden.fEntrega_ord = new Date(date);
     const orden = {
       fVenta_ord: new Date(),
       fEntrega_ord: this.orden.fEntrega_ord,
-      usuario: this.orden.usuario,
+      usuario: this.orden.usuario.id_usu,
       direccion: this.orden.direccion
     }
     this.ordenService.postOrden(orden).subscribe((data: Orden) => {
-      //console.log(this.orden.ordenProducto)
       this.orden.ordenProducto.forEach((element: OrdenProducto) => {
         let producto = {
           cantidad_op: element.cantidad_op,
@@ -86,7 +93,6 @@ export class HomePage implements OnInit {
         })
       });
     })
-    //console.log(this.orden);
     this.isModalOpen = false;
     this.alertSaveOrden();
   }
@@ -97,8 +103,8 @@ export class HomePage implements OnInit {
       message: 'Pedido realizado exitosamente, será redireccionado a su lista de pedidos',
       buttons: [{
         text: "OK",
-        handler: ()=>{
-          this.router.navigate(['/pedido-cliente', this.orden.usuario], { relativeTo: this.route, replaceUrl: true })
+        handler: () => {
+          this.router.navigate(['/pedido-cliente', this.orden.usuario.id_usu.toString()], { relativeTo: this.route, replaceUrl: true })
         }
       }],
     });
@@ -167,15 +173,21 @@ export class HomePage implements OnInit {
   eliminarProducto(item) {
     this.orden.ordenProducto.splice(this.orden.ordenProducto.findIndex(producto => producto === item), 1);
   }
+
   seleccionarDireccion(event) {
     this.orden.direccion = event.detail.value;
   }
+
   goDirecciones() {
-    this.router.navigate(['/direcciones'], { relativeTo: this.route, replaceUrl: true })
+    this.router.navigate(['/direcciones', this.orden.usuario.id_usu.toString()],
+      {
+        relativeTo: this.route,
+        replaceUrl: true
+      });
   }
 
   goMisPedidos() {
-    this.router.navigate(['/pedido-cliente'],
+    this.router.navigate(['/pedido-cliente', this.orden.usuario.id_usu.toString()],
       {
         relativeTo: this.route,
         replaceUrl: true

@@ -63,7 +63,10 @@ export class PedidoVistaPage implements OnInit {
   
 
 
-  constructor(private router: Router, private route: ActivatedRoute, private alertController: AlertController,public toastController: ToastController) { }
+  constructor(private router: Router, 
+    private route: ActivatedRoute, 
+    private alertController: AlertController,
+    public toastController: ToastController) { }
 
   ngOnInit() {
   }

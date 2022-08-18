@@ -1,9 +1,86 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>cobros</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-menu side="start" menuId="first" contentId="main">
+  <ion-header>
+  </ion-header>
+  <ion-content>
+
+    <div class="containerImage">
+      <ion-item class="logo">
+        <ion-img [src]="image"></ion-img>
+      </ion-item>
+    </div>
+    <ion-item class="separador">
+      <div class="containerImageNombre">
+        <ion-label class="nombreUsuario" color="medium">Henry Frias Baldelomar</ion-label>
+      </div>
+    </ion-item>
+
+    <ion-list>
+      <ion-item (click)="goProductos()" button="true">
+        <ion-icon name="cart-outline" color="primary"></ion-icon>
+        <ion-label class="margin">Productos</ion-label>
+      </ion-item>
+      <ion-item (click)="goDirecciones()" button="true">
+        <ion-icon name="location-outline" color="primary"></ion-icon>
+        <ion-label class="margin">Mis Pedidos</ion-label>
+      </ion-item>
+      <ion-item (click)="goCerrarSesion()" button="true">
+        <ion-icon name="exit-outline" color="primary"></ion-icon>
+        <ion-label class="margin">Cerrar Sesion</ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-router-outlet id="main">
+  <ion-header>
+    <ion-toolbar color="primary">
+
+      <ion-buttons slot="start" padding>
+        <ion-menu-button class="icon" slot="start"></ion-menu-button>
+      </ion-buttons>
+
+      <ion-title>Lista de Cobros</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
 <ion-content>
 
+  <ion-item     >
+    <ion-grid>
+
+      <ion-row>
+        <ion-label class="textFecha">Fecha: </ion-label>
+      </ion-row>
+
+      <ion-row>
+          <ion-item class="input">
+            <ion-input value="{{ date | date: 'dd.MM.yyyy' }}" id="date"
+              placeholder="Selecione una Fecha">
+            </ion-input>
+          </ion-item>
+          <ion-popover trigger="date" size="cover">
+            <ng-template>
+              <ion-datetime presentation="date" [(ngModel)]="date" [showDefaultButtons]="true" doneText="Aceptar"
+                cancelText="Cancelar">
+              </ion-datetime>
+            </ng-template>
+          </ion-popover>
+      </ion-row>
+
+      <ion-row>
+        <ion-col size="8" class="text">
+          <ion-label>Nombre Cliente </ion-label>
+        </ion-col>
+        <ion-col size="2" class="text">
+          <ion-label>Saldo </ion-label>
+        </ion-col>
+        <ion-col size="2">
+          <ion-icon (click)="editarCobro()" name="create-outline" color="warning" class="icon"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-item>
+
 </ion-content>
+
+</ion-router-outlet>

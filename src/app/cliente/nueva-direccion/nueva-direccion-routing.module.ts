@@ -5,7 +5,7 @@ import { NuevaDireccionPage } from './nueva-direccion.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':idUsuario',
     component: NuevaDireccionPage
   }
 ];

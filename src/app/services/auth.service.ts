@@ -41,4 +41,8 @@ export class AuthService {
   getUsuarioOrden(id_user: number, estado: string){
     return  this.http.get(`${this.api_url}usuario/orden/${id_user}/${estado}`);
   }
+
+  getUsuarioById(id: string){
+    return  this.http.get(this.api_url+'usuario/'+id);
+  }
 }

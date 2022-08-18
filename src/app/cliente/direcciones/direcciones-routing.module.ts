@@ -5,7 +5,7 @@ import { DireccionesPage } from './direcciones.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':id_user',
     component: DireccionesPage
   }
 ];

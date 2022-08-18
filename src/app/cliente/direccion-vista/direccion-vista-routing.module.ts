@@ -5,7 +5,7 @@ import { DireccionVistaPage } from './direccion-vista.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':id_user/:id_direccion',
     component: DireccionVistaPage
   }
 ];

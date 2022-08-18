@@ -52,9 +52,22 @@
     margin-top: 8px;
 }
 
+.datosPedidoD{
+    font-weight: bold;
+    margin-left: 10px;
+    margin-top: 0px;
+}
+
+.datosPedidoLista{
+    font-weight: bold;
+    margin-left: 15px;
+    margin-top: 8px;
+    text-align: center;
+}
+
 .datosCliente{
     margin-left: 15px;
-    margin-top: 5px;
+    margin-top: 0px;
 }
 
 .estadoPedido{
@@ -63,6 +76,11 @@
 
 .wrap{
     white-space: normal;
+
+}
+
+.wrapUniM{
+    font-size: small;
 }
 
 .flexContainer {

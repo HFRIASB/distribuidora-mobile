@@ -14,7 +14,7 @@
     </div>
     <ion-item class="separador">
       <div class="containerImageNombre">
-        <ion-label class="nombreUsuario" color="medium">Henry Frias Baldelomar</ion-label>
+        <ion-label class="nombreUsuario" color="medium">{{this.usuario.nombre_usu}}</ion-label>
       </div>
     </ion-item>
 
@@ -50,17 +50,17 @@
         <ion-item *ngFor="let direccion of direcciones">
           <div class="direccionContenedor">
             <div>
-              <ion-grid (click)="selecionarDireccion(direccion.direccion_id)">
+              <ion-grid (click)="selecionarDireccion(direccion.id_direc)">
                 <ion-row class="item">
                   <ion-col>
                     <ion-icon name="location-outline" color="primary" class="icon"></ion-icon>
                   </ion-col>
                   <ion-col>
                     <ion-row >
-                      <ion-label  class="nombreDireccion">{{direccion.direccion_nombre}} </ion-label>
+                      <ion-label  class="nombreDireccion">{{direccion.nombre_direc}} </ion-label>
                     </ion-row>
                     <ion-row class="descripcionDireccion">
-                      <ion-label color="medium">{{direccion.direccion_descripcion}} </ion-label>
+                      <ion-label color="medium">{{direccion.descripcion_direc}} </ion-label>
                     </ion-row>
                   </ion-col>
                 </ion-row>

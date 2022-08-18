@@ -42,17 +42,8 @@ export class DetallePedidoPage implements OnInit {
 
   ngOnInit() {
   }
-
-  goProducto(){
-    this.router.navigate(['/home', this.id_usuario],//id
-    {
-      relativeTo: this.route,
-      replaceUrl: true
-    });
-  }
-
-  goDirecciones(){
-    this.router.navigate(['/direcciones'],
+  goBack(){
+    this.router.navigate(['/pedido-cliente', this.id_usuario],//id
     {
       relativeTo: this.route,
       replaceUrl: true

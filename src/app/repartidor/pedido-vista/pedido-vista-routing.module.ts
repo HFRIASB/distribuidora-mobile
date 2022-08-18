@@ -5,7 +5,7 @@ import { PedidoVistaPage } from './pedido-vista.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':idUsuario',
     component: PedidoVistaPage
   }
 ];

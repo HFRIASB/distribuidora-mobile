@@ -92,7 +92,7 @@ export class PedidoClientePage implements OnInit {
     public toastController: ToastController,
     private authService: AuthService ) {
       this.route.params.subscribe(params => {
-        //console.log(params)
+      this.user_id = params.id_user;//id
         this.user_id = Number(params.id);
         this.authService.getUsuarioOrden(this.user_id,"Pendiente").subscribe((pedidos:any[]) => {
           this.pedidos=pedidos;
@@ -103,7 +103,7 @@ export class PedidoClientePage implements OnInit {
   }
 
   goProducto(){
-    this.router.navigate(['/home'],
+    this.router.navigate(['/home', this.user_id],//id
     {
       relativeTo: this.route,
       replaceUrl: true

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { Direccion } from 'src/app/models/direccion';
+import { Usuario } from 'src/app/models/usuario';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-direcciones',
@@ -9,19 +12,28 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./direcciones.page.scss'],
 })
 export class DireccionesPage implements OnInit {
-
-  direcciones = [
-    { direccion_id: 1, direccion_nombre: 'Caseta San Martin', direccion_descripcion: 'Puesto rojo #23', direccion_latitud: "-17.401472", direccion_longitud: "-66.155927" },
-    { direccion_id: 2, direccion_nombre: 'Casa Laguna', direccion_descripcion: 'Puesto verde #24', direccion_latitud: "-17.411392", direccion_longitud: "-66.144056" },
-    { direccion_id: 3, direccion_nombre: 'Caseta Colcapirhua', direccion_descripcion: 'Puesto azul #65', direccion_latitud: "-17.390750", direccion_longitud: "-66.228295" }
-  ]
+  direcciones=[];
 
   image = "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/fa33b82/2147483647/resize/300x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2Fhomer.png"
 
   handlerMessage = '';
   roleMessage = '';
+  usuario= new Usuario();
 
-  constructor(private router: Router, private route: ActivatedRoute, private alertController: AlertController,public toastController: ToastController) {
+  constructor(private router: Router, 
+    private route: ActivatedRoute, 
+    private alertController: AlertController,
+    public toastController: ToastController,
+    private authService: AuthService) {
+      this.route.params.subscribe(params => {
+        this.authService.getUsuarioDireccion(+params.id_user).subscribe((data: Direccion[])=>{
+          this.direcciones = data;
+        })
+        this.authService.getUsuarioById(params.id_user).subscribe((user: Usuario)=>{
+          console.log(user)
+          this.usuario = user;
+        })
+      })
 
   }
 
@@ -29,7 +41,7 @@ export class DireccionesPage implements OnInit {
   }
 
   goProductos() {
-    this.router.navigate(['/home'],
+    this.router.navigate(['/home', this.usuario.id_usu.toString()],
       {
         relativeTo: this.route,
         replaceUrl: true
@@ -37,7 +49,8 @@ export class DireccionesPage implements OnInit {
   }
 
   selecionarDireccion(direccion) {
-    this.router.navigate(['/direccion-vista'],
+    console.log(direccion)
+    this.router.navigate(['/direccion-vista', this.usuario.id_usu.toString(), direccion],
       {
         relativeTo: this.route,
         replaceUrl: true
@@ -45,7 +58,7 @@ export class DireccionesPage implements OnInit {
   }
 
   agregarDireccion() {
-    this.router.navigate(['/nueva-direccion'],
+    this.router.navigate(['/nueva-direccion', this.usuario.id_usu.toString()],
       {
         relativeTo: this.route,
         replaceUrl: true
@@ -53,7 +66,7 @@ export class DireccionesPage implements OnInit {
   }
 
   goMisPedidos(){
-    this.router.navigate(['/pedido-cliente'],
+    this.router.navigate(['/pedido-cliente', this.usuario.id_usu.toString()],
       {
         relativeTo: this.route,
         replaceUrl: true

@@ -4,6 +4,8 @@ import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { DireccionService } from 'src/app/services/direccion.service';
+import { Direccion } from 'src/app/models/direccion';
 
 @Component({
   selector: 'app-direccion-vista',
@@ -12,29 +14,35 @@ import { ToastController } from '@ionic/angular';
 })
 export class DireccionVistaPage implements OnInit {
 
-  direccion =
-    {
-      direccion_id: 1,
-      direccion_nombre: 'Caseta San Martin',
-      direccion_descripcion: 'Puesto rojo #23',
-      direccion_latitud: -17.401472,
-      direccion_longitud: -66.155927
-    };
+  id_usuario = null;//id
+
+  direccion: Direccion = new Direccion();
 
   @ViewChild('map1')
   mapRef: ElementRef<HTMLElement>;
   newMap: GoogleMap;
-  center: any = {
-    lat: this.direccion.direccion_latitud,
-    lng: this.direccion.direccion_longitud,
-    //lat: -17.401472,
-    //lng: -66.155927,
-  };
+  center: any={ 
+    lat: -17.380771,
+    lng: -66.153296,}
   markerId: string;
   handlerMessage = '';
   roleMessage = '';
 
-  constructor(private router: Router, private route: ActivatedRoute, private alertController: AlertController,public toastController: ToastController, ) { }
+  constructor(
+    private router: Router, 
+    private route: ActivatedRoute, 
+    private alertController: AlertController,
+    public toastController: ToastController,
+    private direccionService: DireccionService) { 
+      this.route.params.subscribe(params => {
+        console.log(params)//
+        this.id_usuario = params.id_user;//id
+        this.direccionService.getDireccionById(params.id_direccion).subscribe((direccion: Direccion)=>{
+          this.direccion = direccion
+         
+        })
+      })
+    }
 
   ngOnInit() {
   }
@@ -77,7 +85,7 @@ export class DireccionVistaPage implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/direcciones'], { relativeTo: this.route, replaceUrl: true })
+    this.router.navigate(['/direcciones', this.id_usuario], { relativeTo: this.route, replaceUrl: true })
   }
 
   async presentToast(texto, color) {
@@ -119,4 +127,5 @@ export class DireccionVistaPage implements OnInit {
     this.roleMessage = `Dismissed with role: ${role}`;
 
   }
+
 }

@@ -30,7 +30,7 @@ export class RegisterPage implements OnInit {
     correo_usu: form.value.correo,
     password_usu: form.value.password,
     fRegistro_usu: new Date(),
-    rol: 2//////////////Corregir con back
+    rol: 3//////////////Corregir con back
     }
     this.authService.registrarUsuario(usuario)
     .subscribe(datosResponce =>{

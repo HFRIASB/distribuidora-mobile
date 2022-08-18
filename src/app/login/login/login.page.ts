@@ -33,6 +33,7 @@ export class LoginPage implements OnInit {
       .subscribe(usuarioToken=>{
         this.authService.getRol(usuarioToken.id_usu)
           .then((user: Usuario)=>{
+            console.log(user)
             if (user.rol.nombre_rol == "Cliente") {
               this.router.navigate(['/home', user.id_usu],
                 {
@@ -40,7 +41,7 @@ export class LoginPage implements OnInit {
                   replaceUrl: true
                 });
             } else if (user.rol.nombre_rol == "Repartidor" || user.rol.nombre_rol == "Administrador") {
-              this.router.navigate(['/pedidos'],
+              this.router.navigate(['/pedidos', user.id_usu],
                 {
                   relativeTo: this.route,
                   replaceUrl: true
