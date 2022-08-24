@@ -14,7 +14,6 @@ capacitor-google-maps {
 .monto{
     font-weight: bold;
     margin-left: 25px;
-    margin-top: 20px;
 }
 
 .datosCliente{
@@ -54,7 +53,7 @@ capacitor-google-maps {
 
 .botones{
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     width: 80%;
     margin-left: 35px;
 }
@@ -62,5 +61,44 @@ capacitor-google-maps {
 .icon {
     font-size: xx-large;
     margin: auto 0;
-  }
+}
+
+.input {
+    width: 90%;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border-color: grey;
+    background-color: gray;
+    margin-left: 20px;
+}
+
+.wrap{
+    white-space: normal;
+}
+
+.margin{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: 80%;
+}
+
+.flexContainerCenter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    height: 90%;
+}
+
 

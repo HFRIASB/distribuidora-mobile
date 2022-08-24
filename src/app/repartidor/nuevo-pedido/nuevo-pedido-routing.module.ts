@@ -5,7 +5,7 @@ import { NuevoPedidoPage } from './nuevo-pedido.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':id',
     component: NuevoPedidoPage
   }
 ];

@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { Orden } from 'src/app/models/orden';
+import { Usuario } from 'src/app/models/usuario';
 import { AuthService } from 'src/app/services/auth.service';
+import { OrdenService } from 'src/app/services/orden.service';
 
 @Component({
   selector: 'app-pedido-cliente',
@@ -11,120 +14,58 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class PedidoClientePage implements OnInit {
 
-  image = "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/fa33b82/2147483647/resize/300x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2Fhomer.png"
- 
-  pedidos=[];
+  image= "../../../assets/icon/logoEmpresa.png"
+  pedidos = [];
 
- /* pedidos = [
-    { 
-      pedido_id: 1,
-      pedido_estado: "entregado",
-      cliente: {
-               cliente_nombre: "Henry",
-               cliente_id: 1,
-               },
-      direccion:{
-                direccion_id:1,
-                direccion_nombre:"miamicito",
-                direccion_descripcion:"caseta #12",
-                direccion_latitude:-17.390750,
-                direccion_longitude:-66.228295
-                 },
-      venta_fecha: new Date(),
-      entrega_fecha: new Date(),
-      productos: [
-        { producto: {
-                    producto_id:1,
-                    producto_nombre:"aceite"
-                    }, 
-          cantidad: 1, 
-        },
-        {
-          producto: {
-                    producto_id:2,
-                    producto_nombre:"chesco"
-                     }, 
-         cantidad: 1,
-        }
-      ]
-    },
-    { 
-      pedido_id: 2,
-      pedido_estado: "cancelado",
-      cliente: {
-               cliente_nombre: "Jhoel",
-               cliente_id: 2,
-               },
-      direccion:{
-                direccion_id:2,
-                direccion_nombre:"Colonial",
-                direccion_descripcion:"caseta #13",
-                direccion_latitude:-17.390750,
-                direccion_longitude:-66.228295
-                 },
-      venta_fecha: new Date(),
-      entrega_fecha: new Date(),
-      productos: [
-        { producto: {
-                    producto_id:1,
-                    producto_nombre:"aceite"
-                    }, 
-          cantidad: 1, 
-        },
-        {
-          producto: {
-                    producto_id:2,
-                    producto_nombre:"chesco"
-                     }, 
-         cantidad: 1,
-        }
-      ]
-    }
-  ]*/
-  user_id=null;
+  user = new Usuario;
 
   handlerMessage = '';
   roleMessage = '';
 
-  constructor(private router: Router, 
-    private route: ActivatedRoute,  
+  constructor(private router: Router,
+    private route: ActivatedRoute,
     private alertController: AlertController,
     public toastController: ToastController,
-    private authService: AuthService ) {
-      this.route.params.subscribe(params => {
-      this.user_id = params.id_user;//id
-        this.user_id = Number(params.id);
-        this.authService.getUsuarioOrden(this.user_id,"Pendiente").subscribe((pedidos:any[]) => {
-          this.pedidos=pedidos;
-        })
-    }); }
+    private authService: AuthService,
+    private ordenService: OrdenService) {
+    this.route.params.subscribe(params => {
+      this.authService.getUsuarioById(params.id).subscribe((user: Usuario) => {
+        this.user = user;
+      })
+      this.authService.getUsuarioOrden(params.id, "Pendiente").subscribe((pedidos: Orden[]) => {
+        pedidos.forEach(pedido => {
+          this.pedidos.push(this.ordenService.transformarDate(pedido))
+        });
+      })
+    });
+  }
 
   ngOnInit() {
   }
 
-  goProducto(){
-    this.router.navigate(['/home', this.user_id],//id
-    {
-      relativeTo: this.route,
-      replaceUrl: true
-    });
+  goProducto() {
+    this.router.navigate(['/home', this.user.id_usu],//id
+      {
+        relativeTo: this.route,
+        replaceUrl: true
+      });
   }
 
-  goDirecciones(){
-    this.router.navigate(['/direcciones'],
-    {
-      relativeTo: this.route,
-      replaceUrl: true
-    });
+  goDirecciones() {
+    this.router.navigate(['/direcciones', this.user.id_usu],
+      {
+        relativeTo: this.route,
+        replaceUrl: true
+      });
   }
 
-  abrirPedido(pedido){
+  abrirPedido(pedido) {
     console.log(pedido)
-    this.router.navigate(['/detalle-pedido',this.user_id, pedido.id_ord],
-    {
-      relativeTo: this.route,
-      replaceUrl: true
-    });
+    this.router.navigate(['/detalle-pedido', this.user.id_usu, pedido.id_ord],
+      {
+        relativeTo: this.route,
+        replaceUrl: true
+      });
   }
 
   async presentToast(texto, color) {
@@ -137,7 +78,7 @@ export class PedidoClientePage implements OnInit {
   }
 
 
-  async goCerrarSesion(){
+  async goCerrarSesion() {
     const alert = await this.alertController.create({
       header: '¿Desea salir de su cuenta?',
       buttons: [
@@ -153,12 +94,12 @@ export class PedidoClientePage implements OnInit {
           role: 'confirm',
           handler: () => {
             this.handlerMessage = 'Alert confirmed';
-  
+
             this.router.navigate(['/login'],
-            {
-              relativeTo: this.route,
-              replaceUrl: true
-            });
+              {
+                relativeTo: this.route,
+                replaceUrl: true
+              });
           },
         },
       ],
@@ -170,6 +111,6 @@ export class PedidoClientePage implements OnInit {
     this.roleMessage = `Dismissed with role: ${role}`;
 
   }
-  
+
 
 }

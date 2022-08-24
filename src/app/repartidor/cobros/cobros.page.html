@@ -10,18 +10,18 @@
     </div>
     <ion-item class="separador">
       <div class="containerImageNombre">
-        <ion-label class="nombreUsuario" color="medium">Henry Frias Baldelomar</ion-label>
+        <ion-label class="nombreUsuario" color="medium">{{this.repartidor_id}}</ion-label>
       </div>
     </ion-item>
 
     <ion-list>
-      <ion-item (click)="goProductos()" button="true">
+      <ion-item (click)="goNuevoPedido()" button="true">
         <ion-icon name="cart-outline" color="primary"></ion-icon>
-        <ion-label class="margin">Productos</ion-label>
+        <ion-label class="margin">Nuevo Pedido</ion-label>
       </ion-item>
-      <ion-item (click)="goDirecciones()" button="true">
-        <ion-icon name="location-outline" color="primary"></ion-icon>
-        <ion-label class="margin">Mis Pedidos</ion-label>
+      <ion-item (click)="goPedidos()" button="true">
+        <ion-icon name="list-outline" color="primary"></ion-icon>
+        <ion-label class="margin">Lista de Pedidos</ion-label>
       </ion-item>
       <ion-item (click)="goCerrarSesion()" button="true">
         <ion-icon name="exit-outline" color="primary"></ion-icon>
@@ -43,44 +43,26 @@
     </ion-toolbar>
   </ion-header>
 
-<ion-content>
+  <ion-content>
 
-  <ion-item     >
-    <ion-grid>
+    <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+      <div class="container">
+        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
+      </div>
+    </div>
+-->
 
-      <ion-row>
-        <ion-label class="textFecha">Fecha: </ion-label>
-      </ion-row>
+    <div *ngFor="let cliente of clientes">
+      <div class="card" (click)="goDetalleCobro(cliente)">
+       <ion-label class="nombre">{{cliente.nombre_usu}}</ion-label>
+       <ion-label>Deuda: {{cliente.deuda_usu}}</ion-label>
+       <ion-label>{{cliente.observacion_usu}}</ion-label>
+       <ion-label>{{cliente.celular_usu}}</ion-label>
+      </div>
+     
+    </div>
+    <div class="marginBotton"></div>
 
-      <ion-row>
-          <ion-item class="input">
-            <ion-input value="{{ date | date: 'dd.MM.yyyy' }}" id="date"
-              placeholder="Selecione una Fecha">
-            </ion-input>
-          </ion-item>
-          <ion-popover trigger="date" size="cover">
-            <ng-template>
-              <ion-datetime presentation="date" [(ngModel)]="date" [showDefaultButtons]="true" doneText="Aceptar"
-                cancelText="Cancelar">
-              </ion-datetime>
-            </ng-template>
-          </ion-popover>
-      </ion-row>
-
-      <ion-row>
-        <ion-col size="8" class="text">
-          <ion-label>Nombre Cliente </ion-label>
-        </ion-col>
-        <ion-col size="2" class="text">
-          <ion-label>Saldo </ion-label>
-        </ion-col>
-        <ion-col size="2">
-          <ion-icon (click)="editarCobro()" name="create-outline" color="warning" class="icon"></ion-icon>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-item>
-
-</ion-content>
+  </ion-content>
 
 </ion-router-outlet>

@@ -4,7 +4,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'cobros',
+    redirectTo: 'nuevo-pedido/3',
     pathMatch: 'full'
   },
   {
@@ -59,6 +59,11 @@ const routes: Routes = [
     path: 'detalle-pedido',
     loadChildren: () => import('./cliente/detalle-pedido/detalle-pedido.module').then( m => m.DetallePedidoPageModule)
   },
+  {
+    path: 'detalle-cobro',
+    loadChildren: () => import('./repartidor/detalle-cobro/detalle-cobro.module').then( m => m.DetalleCobroPageModule)
+  },
+
 
 
 

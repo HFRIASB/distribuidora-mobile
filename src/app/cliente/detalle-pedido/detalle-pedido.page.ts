@@ -14,8 +14,7 @@ import { OrdenService } from 'src/app/services/orden.service';
 })
 export class DetallePedidoPage implements OnInit {
 
-  image = "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/fa33b82/2147483647/resize/300x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2Fhomer.png"
-
+  image= "../../../assets/icon/logoEmpresa.png"
   id_usuario = null;//id
 
   handlerMessage = '';
@@ -33,7 +32,7 @@ export class DetallePedidoPage implements OnInit {
     this.orden.usuario = new Usuario();//Usuario
     this.route.params.subscribe(params => {
       this.id_usuario = params.id_user;//id
-      this.ordenService.getOrdenById(params.id_ord).subscribe((detalle: Orden) => {
+      this.ordenService.getOrdenById(+params.id_ord).subscribe((detalle: Orden) => {
         this.orden = this.ordenService.transformarDate(detalle)
         console.log(this.orden)
       })

@@ -8,7 +8,7 @@
         <ion-img [src]="image"></ion-img>
       </ion-item>
     </div>
-    <ion-item class="separador">
+    <ion-item>
       <div class="containerImageNombre">
         <ion-label class="nombreUsuario" color="medium">{{this.orden.usuario.nombre_usu}}</ion-label>
       </div>
@@ -41,46 +41,44 @@
 
       <ion-title>Productos</ion-title>
       <ion-buttons slot="end" padding>
-        <ion-icon (click)="abrirCarrito(true)" class="icon" name="cart"></ion-icon>
+        <ion-icon (click)="abrirCarrito(true)" class="iconHeader" name="cart"></ion-icon>
       </ion-buttons>
     </ion-toolbar>
   </ion-header>
 
-  <ion-content>
-
-    <ion-item *ngFor="let product of productos">
-
-      <div class="flexContainer">
-        <div>
-          <ion-grid>
-            <ion-row>
-              <ion-col class="test">
-                <ion-thumbnail>
-                  <ion-img [src]="product.foto_prod"></ion-img>
-                </ion-thumbnail>
-              </ion-col>
-              <ion-col class="color">
-                <ion-row >
-                  <ion-label class="wrap">{{product.nombre_prod}} </ion-label>
-                </ion-row>
-                <ion-row>
-                  <ion-label color="medium">{{product.uniMedida_prod}} </ion-label>
-                </ion-row>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </div>
-
-        <div class="icon-div">
-          <div class="icon">
-            <ion-icon (click)="addCart(product)" name="cart-outline" color="primary">
-            </ion-icon>
-          </div>
-        </div>
-
+  <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+      <div class="container">
+        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
       </div>
+    </div>
+-->
 
-    </ion-item>
+  <ion-content>
+    <div *ngFor="let product of productos">
+      <ion-grid>
+        <ion-row class="borde">
+          <ion-col size="2">
+            <ion-thumbnail>
+              <ion-img [src]="product.foto_prod"></ion-img>
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col size="8">
+            <ion-row>
+              <ion-label class="wrap">{{product.nombre_prod}} </ion-label>
+            </ion-row>
+            <ion-row>
+              <ion-label color="medium">{{product.uniMedida_prod}} </ion-label>
+            </ion-row>
+          </ion-col>
+          <ion-col size="2" class="icon">
+            <ion-icon (click)="addCart(product)" name="cart-outline" color="primary"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+    <div class="marginBotton">
+
+    </div>
 
     <ion-modal [isOpen]="isModalOpen">
       <ng-template>
@@ -88,22 +86,29 @@
           <ion-toolbar color="primary">
             <ion-title>Carrito de Compra</ion-title>
             <ion-buttons slot="end">
-              <ion-icon (click)="abrirCarrito(false)" name="close" class="icon"></ion-icon>
+              <ion-icon (click)="abrirCarrito(false)" name="close" class="iconHeader"></ion-icon>
             </ion-buttons>
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
 
+          <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+      <div class="container">
+        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
+      </div>
+    </div>
+-->
+
           <ion-item *ngFor="let item of orden.ordenProducto">
             <ion-grid>
               <ion-row>
                 <ion-col size="8">
-                  <ion-label>{{item.producto.nombre_prod}} </ion-label>
+                  <ion-label class="wrap">{{item.producto.nombre_prod}} </ion-label>
                 </ion-col>
                 <ion-col size="2">
                   <ion-label>x{{item.cantidad_op}} </ion-label>
                 </ion-col>
-                <ion-col>
+                <ion-col size="1" >
                   <ion-icon (click)="eliminarProducto(item)" name="trash-sharp" color="danger"></ion-icon>
                 </ion-col>
               </ion-row>
@@ -148,12 +153,10 @@
 
                 </ion-item>
               </ion-row>
-              <ion-row>
-                <div class="boton">
-                  <ion-button [disabled]="this.orden.ordenProducto.length<1" shape="round" color="primary"
-                    (click)="hacerPedido(date)" class="textBoton">REALIZAR ENTREGA</ion-button>
-                </div>
-              </ion-row>
+              <div class="boton">
+                <ion-button [disabled]="this.orden.ordenProducto.length<1" shape="round" color="primary"
+                  (click)="hacerPedido(date)" class="textBoton" size="large">REALIZAR ENTREGA</ion-button>
+              </div>
             </ion-grid>
           </ion-item>
         </ion-content>

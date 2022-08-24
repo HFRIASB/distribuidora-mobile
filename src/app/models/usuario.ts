@@ -1,5 +1,6 @@
 import { Direccion } from "./direccion";
 import { Orden } from "./orden";
+import { Pago } from "./pago";
 import { Rol } from "./rol";
 
 export class Usuario {
@@ -35,6 +36,8 @@ export class Usuario {
     direccion: Direccion[];
 
     orden: Orden[];
+
+    pago: Pago[];
 
 
 }

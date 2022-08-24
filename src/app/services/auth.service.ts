@@ -45,4 +45,12 @@ export class AuthService {
   getUsuarioById(id: string){
     return  this.http.get(this.api_url+'usuario/'+id);
   }
+
+  getOnlyClientes(){
+    return  this.http.get(this.api_url+'usuario/onlyClientes'); 
+  }
+
+  getDetalleCliente(cliente: number){
+    return this.http.get(this.api_url+"usuario/detalle-cliente/"+cliente.toString());
+  }
 }

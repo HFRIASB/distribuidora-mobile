@@ -8,6 +8,8 @@ import { DireccionPedidoPageRoutingModule } from './direccion-pedido-routing.mod
 
 import { DireccionPedidoPage } from './direccion-pedido.page';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +17,7 @@ import { DireccionPedidoPage } from './direccion-pedido.page';
     IonicModule,
     DireccionPedidoPageRoutingModule
   ],
-  declarations: [DireccionPedidoPage]
+  declarations: [DireccionPedidoPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DireccionPedidoPageModule {}

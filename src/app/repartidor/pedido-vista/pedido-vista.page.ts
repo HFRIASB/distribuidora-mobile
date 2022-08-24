@@ -4,6 +4,14 @@ import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ToastController } from '@ionic/angular';
+import { Orden } from 'src/app/models/orden';
+import { AuthService } from 'src/app/services/auth.service';
+import { Usuario } from 'src/app/models/usuario';
+import { OrdenService } from 'src/app/services/orden.service';
+import { Direccion } from 'src/app/models/direccion';
+import { ControlEnvase } from 'src/app/models/control-envase';
+import { ControlEnvaseService } from 'src/app/services/control-envase.service';
+import { TipoEnvase } from 'src/app/models/tipo-envase';
 
 @Component({
   selector: 'app-pedido-vista',
@@ -11,109 +19,48 @@ import { ToastController } from '@ionic/angular';
   styleUrls: ['./pedido-vista.page.scss'],
 })
 export class PedidoVistaPage implements OnInit {
-  isModalOpen = false;
-
-  pedido = 
-    { 
-      pedido_id: 1,
-      pedido_estado: "entregado",
-      cliente: {
-               cliente_nombre: "Henry",
-               cliente_id: 1,
-               },
-      direccion:{
-                direccion_id:1,
-                direccion_nombre:"miamicito",
-                direccion_descripcion:"caseta #12",
-                direccion_latitude:-17.390750,
-                direccion_longitude:-66.228295
-                 },
-      venta_fecha: new Date(),
-      entrega_fecha: new Date(),
-      productos: [
-                 { producto: {
-                             producto_id:1,
-                             producto_nombre:"aceite"
-                             }, 
-                   cantidad: 1, 
-                 },
-                 {
-                   producto: {
-                             producto_id:2,
-                             producto_nombre:"chesco"
-                              }, 
-                  cantidad: 1,
-                 }
-                  ]
-    }
-
-    @ViewChild('map')
-    mapRef: ElementRef<HTMLElement>;
-    newMap: GoogleMap;
-    center: any = {
-      //lat: this.pedido.direccion.direccion_latitude,
-      //lng: this.pedido.direccion.direccion_longitude,
-      lat: -17.401472,
-      lng: -66.155927,
-    };
-    markerId: string;
-    handlerMessage = '';
-    roleMessage = '';
-  
-  
+  image= "../../../assets/icon/logoEmpresa.png"
+  orden: Orden = new Orden();
+  idRepartidor = null;
+  monto_cobrado = 0;
+  controlEnvasesOpen =false;
+  controlEnvases = [];
+  controlEnvase = new ControlEnvase;
+  tiposEnvases = [];
 
 
-  constructor(private router: Router, 
-    private route: ActivatedRoute, 
+  constructor(private router: Router,
+    private route: ActivatedRoute,
     private alertController: AlertController,
-    public toastController: ToastController) { }
+    public toastController: ToastController,
+    private authService: AuthService,
+    private ordenService: OrdenService,
+    private controlEnvaseService: ControlEnvaseService) {
+    this.controlEnvase.fecha_ce = new Date()
+    this.controlEnvase.cantEnvase_ce=0
+    this.orden.usuario = new Usuario()
+    this.orden.direccion = new Direccion()
+    this.route.params.subscribe(params => {
+      this.idRepartidor = params.idUsuario
+      this.ordenService.getOrdenById(+params.idOrden).subscribe((detalle: Orden) => {
+        this.controlEnvase.usuario = detalle.usuario.id_usu 
+        this.orden = this.ordenService.transformarDate(detalle);
+      })
+    })
+    this.controlEnvaseService.getTiposEnvase().subscribe((data: TipoEnvase[])=>{
+      this.tiposEnvases = data;
+    })
+  }
 
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
-    this.createMap();
-  }
-
-  async createMap() {
-    try {
-      this.newMap = await GoogleMap.create({
-        id: 'capacitor-google-maps',
-        element: this.mapRef.nativeElement,
-        apiKey: environment.google_maps_api_key,
-        config: {
-          center: this.center,
-          zoom: 18,
-        },
-      });
-
-      //Habilitar mi Ubicacion
-      //await this.newMap.enableCurrentLocation(true);
-
-      this.addMarker(this.center.lat, this.center.lng);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  async addMarker(lat, lng) {
-    //Add a marker to he map
-    this.markerId = await this.newMap.addMarker({
-      coordinate: {
-        lat: lat,
-        lng: lng,
-      },
-      title: "Mi Casa",
-      draggable: false
-    });
-  }
-
   verDireccion() {
-    this.router.navigate(['/direccion-pedido'], { relativeTo: this.route, replaceUrl: true })
+    this.router.navigate(['/direccion-pedido', this.idRepartidor, this.orden.id_ord.toString()], { relativeTo: this.route, replaceUrl: true })
   }
- 
+
   goBack() {
-    this.router.navigate(['/pedidos'], { relativeTo: this.route, replaceUrl: true })
+    this.router.navigate(['/pedidos', this.idRepartidor], { relativeTo: this.route, replaceUrl: true })
   }
 
   async presentToast(texto, color) {
@@ -125,38 +72,81 @@ export class PedidoVistaPage implements OnInit {
     toast.present();
   }
 
-  btnEntregado(){
-    this.presentToast("Pedido Entregado Exitosamente", 'primary');
+  btnEntregado() {
+    //Actualizar estado orden, agregar pago
+    this.ordenService.updateEstadoOrden(this.orden.id_ord, "Entregado").subscribe(dato => {
+      if (this.monto_cobrado > 0 && this.monto_cobrado != null) {
+        this.ordenService.hacerPago(this.orden.usuario.id_usu, this.monto_cobrado).subscribe(resp => {
+          this.presentToast("Pedido Entregado Exitosamente", 'primary');
+          this.goBack();
+        }, error => {
+          this.presentToast("Hubo un error al entregar su pedido", 'danger');
+        })
+      } else {
+        this.presentToast("Pedido Entregado Exitosamente", 'primary');
+        this.goBack();
+      }
+
+    }, error => {
+      this.presentToast("Hubo un error al entregar su pedido", 'danger');
+    })
+
   }
 
-  async btnCancelado(){
+  registrarControlEnvase(isOpen){
+    this.controlEnvasesOpen = isOpen
+  }
+
+  radioGroupChange(event){
+    this.controlEnvase.estado_ce = event.detail.value;
+  }
+
+  setCantidadEnvases(value){
+    this.controlEnvase.cantEnvase_ce = value
+  }
+
+  seleccionarEnvase(event){
+    this.controlEnvase.tipEnvase_ce = event.detail.value
+  }
+
+  agregarControl(){
+    console.log(this.controlEnvase)
+    this.controlEnvaseService.postControlEnvase(this.controlEnvase).subscribe(data=>{
+ //AgregarAlert su control fue registrado correctamente
+      this.controlEnvase.estado_ce = null;
+      this.controlEnvase.cantEnvase_ce = 0;
+      this.controlEnvase.tipEnvase_ce = null;
+      this.controlEnvasesOpen = false;
+    })
+  }
+  
+
+  setQuantity(value) {
+    this.monto_cobrado = value;
+  }
+
+  async btnCancelado() {
     const alert = await this.alertController.create({
-      header: '¿Esta seguro que desea cancelar el pedido?',
+      header: '¿Esta seguro que deséa anular el pedido?',
       buttons: [
         {
           text: 'Cancelar',
           role: 'cancel',
-          handler: () => {
-            this.handlerMessage = 'Alert canceled';
-          },
         },
         {
           text: 'Confirmar',
           role: 'confirm',
           handler: () => {
-            this.handlerMessage = 'Alert confirmed';
-            this.presentToast("Pedido Cancelado", 'primary');
+            this.ordenService.updateEstadoOrden(this.orden.id_ord, "Cancelado").subscribe(data => {
+              this.presentToast("Pedido Anulado", 'danger');
+              this.goBack();
+            })
           },
         },
       ],
     });
 
     await alert.present();
-
-
-
-    const { role } = await alert.onDidDismiss();
-    this.roleMessage = `Dismissed with role: ${role}`;
 
   }
 

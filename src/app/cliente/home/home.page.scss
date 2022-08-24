@@ -12,13 +12,18 @@
 
 .icon {
     font-size: xx-large;
-    margin: auto 0;
-    margin-right: 15px;
+    margin-top: 8px;
+    
+  align-items: center;
 }
 
+.iconHeader {
+    font-size: xx-large;
+    margin-right: 7px;
+}
 .color {
     background-color: aqua;
-    width: 100%;
+    width: 100%;    
 }
 
 .input {
@@ -32,12 +37,7 @@
 }
 
 .logo {
-    width: 60%;
-}
-
-.separador {
     width: 100%;
-    border-bottom: 10 solid blue;
 }
 
 .containerImage {
@@ -77,11 +77,30 @@
 .wrap{
     white-space: normal;
 }
-.color{
-    background-color: red;//
-}
-.test{
-    background-color: green;//
-    width: 30%;
+
+.marginBotton{
+    margin-bottom: 50px;
 }
 
+.borde{
+    border:solid 1px;
+    border-color: lightgray;
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: 80%;
+}
+
+.flexContainerCenter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    height: 90%;
+}

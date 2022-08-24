@@ -14,5 +14,7 @@ export class ControlEnvase {
     
     motivo_ce: string;
 
-    orden: Orden;
+    fecha_ce: Date;
+
+    usuario: number;
 }

@@ -18,11 +18,11 @@ import { ProductoService } from 'src/app/services/producto.service';
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit {
+  image= "../../../assets/icon/logoEmpresa.png"
   item_qty: any;
   isModalOpen = false;
   icon = "../../../assets/icon/add-to-cart.png"
   productos: Producto[] = [];
- // id_usuario = null;//id
   direcciones: Direccion[] = [];
 
   orden = {
@@ -140,10 +140,6 @@ export class HomePage implements OnInit {
                 producto: producto,
                 cantidad_op: data.cantidad
               })
-              /* let ordenProducto: OrdenProducto = new OrdenProducto()
-               ordenProducto.producto = producto;
-               ordenProducto.cantidad_op = data.cantidad;
-               this.orden.ordenProducto.push(ordenProducto);*/
               this.presentToast("Producto añadido exitosamente", 'primary');
             } else {
               this.presentToast("Error: Elija un número mayor a 0 y menor a 100", 'danger');

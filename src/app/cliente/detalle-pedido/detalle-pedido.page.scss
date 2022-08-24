@@ -8,11 +8,6 @@
     margin-bottom: 1px;
 }
 
-.estadoPedido{
-    color: green;
-    margin-bottom: 5px;
-}
-
 .icon {
     font-size: xx-large;
     margin: auto 0;
@@ -71,20 +66,36 @@
 }
 
 .estadoPedido{
-    color: green;
+    color:#ffc409;
 }
 
 .wrap{
     white-space: normal;
-
 }
 
 .wrapUniM{
-    font-size: small;
+    font-size: medium;
 }
 
 .flexContainer {
+    height: 90%;
     display: flex;
-    justify-content: space-between;
     width: 100%;
+}
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: 80%;
+}
+
+.flexContainerCenter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    height: 90%;
 }

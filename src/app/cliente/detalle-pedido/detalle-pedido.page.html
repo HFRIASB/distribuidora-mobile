@@ -58,21 +58,24 @@
       <ion-label>Lista de Productos</ion-label>
     </div>
 
+    <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+      <div class="container">
+        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
+      </div>
+    </div>
+-->
     <ion-item *ngFor="let pedido of orden.ordenProducto">
       <div class="flexContainer">
-        <div>
-
           <ion-grid>
-
             <ion-row>
 
-              <ion-col class="test">
+              <ion-col size="2" >
                 <ion-thumbnail>
-                  <ion-img [src]="pedido.foto_prod"></ion-img>
+                  <ion-img [src]="pedido.producto.foto_prod"></ion-img>
                 </ion-thumbnail>
               </ion-col>
 
-              <ion-col class="color">
+              <ion-col size="10">
                 <ion-row>
                   <ion-label class="wrap">{{pedido.producto.nombre_prod}} </ion-label>
                 </ion-row>
@@ -85,10 +88,7 @@
               </ion-col>
 
             </ion-row>
-
           </ion-grid>
-
-        </div>
       </div>
     </ion-item>
 

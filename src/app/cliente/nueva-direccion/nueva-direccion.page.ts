@@ -12,6 +12,7 @@ import { DireccionService } from 'src/app/services/direccion.service';
   styleUrls: ['./nueva-direccion.page.scss'],
 })
 export class NuevaDireccionPage implements OnInit {
+  image= "../../../assets/icon/logoEmpresa.png"
 
   isModalOpen = false;
 
@@ -135,9 +136,9 @@ export class NuevaDireccionPage implements OnInit {
     }
     this.direccionService.postDireccion(nuevaDireccion).subscribe(datos=>{
       this.presentToast("Dirección agregada exitosamente", 'primary');
-      this.isModalOpen = false
-      // this.router.navigate(['/direcciones', this.id_usuario], { relativeTo: this.route, replaceUrl: true })
+      this.isModalOpen = false;
     });
+    //this.router.navigate(['/direcciones', this.id_usuario], { relativeTo: this.route, replaceUrl: true })
     console.log("guardado")
   }
 

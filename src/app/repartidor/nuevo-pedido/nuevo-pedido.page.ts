@@ -2,6 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { Direccion } from 'src/app/models/direccion';
+import { Producto } from 'src/app/models/producto';
+import { Usuario } from 'src/app/models/usuario';
+import { AuthService } from 'src/app/services/auth.service';
+import { OrdenProductoService } from 'src/app/services/orden-producto.service';
+import { OrdenService } from 'src/app/services/orden.service';
+import { ProductoService } from 'src/app/services/producto.service';
 
 
 @Component({
@@ -10,39 +17,46 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./nuevo-pedido.page.scss'],
 })
 export class NuevoPedidoPage implements OnInit {
+  image= "../../../assets/icon/logoEmpresa.png"
 
   buscado: string;
 
   isModalOpen = false;
+  carritoOpen = false;
+  productos = [];
+  clienteElegido = new Usuario();
+  clientes = [];
+  direccionElegida = null;
+  date = null;
 
-  handlerMessage = '';
-  roleMessage = '';
+  carrito = [];
+  repartidor_id = null;
+  searchTerm: string = '';
 
-  image = "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/fa33b82/2147483647/resize/300x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2Fhomer.png"
-
-  productos = [
-    { producto_id: 1, producto_nombre: "aceite", producto_presentacion: 1, producto_stock: 15, categoria_id: 1, unidad_id: 1, producto_foto: this.image },
-    { producto_id: 2, producto_nombre: "refresco", producto_presentacion: 2, producto_stock: 10, categoria_id: 2, unidad_id: 2, producto_foto: this.image },
-    { producto_id: 3, producto_nombre: "leche", producto_presentacion: 1, producto_stock: 15, categoria_id: 1, unidad_id: 1, producto_foto: this.image },
-    { producto_id: 4, producto_nombre: "pollo", producto_presentacion: 2, producto_stock: 10, categoria_id: 2, unidad_id: 2, producto_foto: this.image }
-  ]
-
-  carrito = {
-    cliente_id: null,
-    direccion_id: null,
-    venta_ticomprobante: null,
-    venta_fecha: new Date(),
-    entrega_fecha: null,
-    productos: []
+  buscarCliente(isOpen) {
+    this.isModalOpen = isOpen;
   }
 
-  hacerPedido(date) {
-    this.carrito.entrega_fecha = date;
-    console.log(this.carrito);
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+    public toastController: ToastController,
+    private alertController: AlertController,
+    private productoService: ProductoService,
+    private authService: AuthService,
+    private ordenService: OrdenService,
+    private ordenProductoService: OrdenProductoService) {
+    this.route.params.subscribe(params => {
+      this.repartidor_id = params.id
+      console.log(params)
+    })
+    this.productoService.getTodoProductos().subscribe((data: Producto[]) => {
+      this.productos = data
+    })
+    this.clienteElegido.direccion = [];
+    this.authService.getOnlyClientes().subscribe((cliente: Usuario[]) => {
+      this.clientes = cliente
+    })
   }
- 
-
-  constructor(private router: Router, private route: ActivatedRoute, public toastController: ToastController, private alertController: AlertController) { }
 
   ngOnInit() {
   }
@@ -50,6 +64,37 @@ export class NuevoPedidoPage implements OnInit {
   addCart(id: number, producto_nombre: string) {
     this.presentAlert(id, producto_nombre).then(() => {
     }).catch(e => { });
+  }
+
+  hacerPedido() {
+    const orden = {
+      fVenta_ord: new Date(),
+      fEntrega_ord: new Date(this.date),
+      usuario: this.clienteElegido.id_usu,
+      direccion: Number(this.direccionElegida)
+    }
+    this.ordenService.postOrden(orden).subscribe(data => {
+      console.log(data)
+      this.carrito.forEach(element => {
+        let producto = {
+          cantidad_op: element.cantidad,
+          orden: data,
+          producto: element.producto_id
+        }
+        this.ordenProductoService.postOrdenProducto(producto).subscribe(data1 => {
+        })
+      })
+    })
+  }
+
+  agregarProducto(isOpen) {
+    this.carritoOpen = isOpen;
+  }
+
+  elegirCliente(cliente) {
+    this.clienteElegido = cliente
+    console.log(this.date)
+    this.isModalOpen = false;
   }
 
   async presentToast(texto, color) {
@@ -61,6 +106,11 @@ export class NuevoPedidoPage implements OnInit {
     toast.present();
   }
 
+  seleccionarDireccion(event) {
+    this.direccionElegida = event.detail.value
+    console.log(this.direccionElegida)
+  }
+
   async presentAlert(id: number, producto_nombre: string) {
     const alert = await this.alertController.create({
       header: 'Por favor ingrese una cantidad',
@@ -69,8 +119,12 @@ export class NuevoPedidoPage implements OnInit {
           text: 'AÑADIR',
           handler: (data) => {
             if (data.cantidad > 0 && data.cantidad < 101) {
-              let addProduct = { producto_id: id, cantidad: data.cantidad, producto_nombre: producto_nombre }
-              this.carrito.productos.push(addProduct);
+              let addProduct = {
+                producto_id: id,
+                cantidad: data.cantidad,
+                producto_nombre: producto_nombre
+              }
+              this.carrito.push(addProduct);
               this.presentToast("Producto añadido exitosamente", 'primary');
             } else {
               this.presentToast("Error: Elija un número mayor a 0 y menor a 100", 'danger');
@@ -98,26 +152,26 @@ export class NuevoPedidoPage implements OnInit {
   }
 
   eliminarProducto(item) {
-    this.carrito.productos.splice(this.carrito.productos.findIndex(producto => producto === item), 1);
+    this.carrito.splice(this.carrito.findIndex(producto => producto === item), 1);
   }
 
-  goPedidos(){
-    this.router.navigate(['/pedidos'],
-    {
-      relativeTo: this.route,
-      replaceUrl: true
-    });
+  goPedidos() {
+    this.router.navigate(['/pedidos', this.repartidor_id],
+      {
+        relativeTo: this.route,
+        replaceUrl: true
+      });
   }
 
-  goCobros(){
-    this.router.navigate(['/cobros'],
-    {
-      relativeTo: this.route,
-      replaceUrl: true
-    });
+  goCobros() {
+    this.router.navigate(['/cobros', this.repartidor_id],
+      {
+        relativeTo: this.route,
+        replaceUrl: true
+      });
   }
 
-  async goCerrarSesion(){
+  async goCerrarSesion() {
     const alert = await this.alertController.create({
       header: '¿Desea salir de su cuenta?',
       buttons: [
@@ -125,32 +179,26 @@ export class NuevoPedidoPage implements OnInit {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            this.handlerMessage = 'Alert canceled';
+
           },
         },
         {
           text: 'Confirmar',
           role: 'confirm',
           handler: () => {
-            this.handlerMessage = 'Alert confirmed';
-  
+
             this.router.navigate(['/login'],
-            {
-              relativeTo: this.route,
-              replaceUrl: true
-            });
+              {
+                relativeTo: this.route,
+                replaceUrl: true
+              });
           },
         },
       ],
     });
-  
+
     await alert.present();
-  
-  
-  
-    const { role } = await alert.onDidDismiss();
-    this.roleMessage = `Dismissed with role: ${role}`;
-  
+
   }
 
 

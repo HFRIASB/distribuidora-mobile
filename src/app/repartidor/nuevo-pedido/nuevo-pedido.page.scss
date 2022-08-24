@@ -13,14 +13,18 @@
     margin-bottom: 20px;
 }
 
+.display{
+    display:flex;
+    flex-direction: column;
+}
+
 .margin {
     margin-left: 15px;
 }
 
 .icon {
     font-size: xx-large;
-    margin: auto 0;
-    margin-right: 15px;
+    margin-top: 8px;
 }
 
 .logo {
@@ -45,26 +49,58 @@
     width: 100%;
 }
 
-.icon-div {
-    display: flex;
-    align-content: center;
-    justify-content: center;
-}
-
-.iconn {
-    font-size: xx-large;
-    margin: auto 0;
-    margin-right: 15px;
-}
-
 .boton {
     display: flex;
-    justify-content: center;
     width: 100%;
-    margin-top: 10px;
-
+    margin-top: 5px;
 }
 
 .lista{
     height: 85%;
+}
+
+.textBoton{
+    text-align: center;
+}
+
+.botonPedido{
+    text-align: center;
+}
+
+.input {
+    width: 90%;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-left: 15px;
+    border: solid;
+   // background-color: gray;
+  }
+
+  .wrap{
+    white-space: normal;
+}
+
+.content{
+    width: 100%;
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: 80%;
+}
+
+.flexContainerCenter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    height: 90%;
 }

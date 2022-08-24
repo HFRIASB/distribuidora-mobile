@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Usuario } from 'src/app/models/usuario';
 import { AuthService } from 'src/app/services/auth.service';
+import { ToastController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-register',
@@ -9,12 +11,16 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  image = "https://d19d5sz0wkl0lu.cloudfront.net/dims4/default/fa33b82/2147483647/resize/300x%3E/quality/90/?url=https%3A%2F%2Fatd-brightspot.s3.amazonaws.com%2Fhomer.png"
-  
+  image= "../../../assets/icon/logoEmpresa.png"
 
 
-
-  constructor(private router: Router, private route: ActivatedRoute, private authService: AuthService) { }
+  constructor(
+    private router: Router, 
+    private route: ActivatedRoute, 
+    private authService: AuthService,
+    private alertController: AlertController,
+    public toastController: ToastController,
+    ) { }
 
   ngOnInit() {
   }
@@ -34,8 +40,10 @@ export class RegisterPage implements OnInit {
     }
     this.authService.registrarUsuario(usuario)
     .subscribe(datosResponce =>{
-      this.router.navigate(['/home']);
+      this.alertSaveOrden();
+
     },(error)=>{
+      this.presentToast("Ocurrió un error, vuelva intentar", 'danger');
       //toast"error"
     })
  
@@ -45,4 +53,32 @@ export class RegisterPage implements OnInit {
     this.router.navigate(['/login'], { relativeTo: this.route, replaceUrl: true })
   }
 
+  async alertSaveOrden() {
+    const alert = await this.alertController.create({
+      header: 'Usuario Registrado',
+      message: 'Usuario registrado exitosamente, ingrese con su usuario y contraseña',
+      buttons: [{
+        text: "OK",
+        handler: () => {
+          this.router.navigate(['/login'], 
+          { 
+            relativeTo: this.route, 
+            replaceUrl: true 
+          })
+        }
+      }],
+    });
+    await alert.present();
+  }
+
+  async presentToast(texto, color) {
+    const toast = await this.toastController.create({
+      message: texto,
+      duration: 2000,
+      color: color,
+    });
+    toast.present();
+  }
+  
+ 
 }

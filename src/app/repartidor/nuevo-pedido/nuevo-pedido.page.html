@@ -1,8 +1,5 @@
 <ion-menu side="start" menuId="first" contentId="main">
   <ion-header>
-    <!-- <ion-toolbar color="primary">
-      <ion-title>OPCIONES</ion-title>
-    </ion-toolbar>-->
   </ion-header>
   <ion-content>
 
@@ -13,7 +10,7 @@
     </div>
     <ion-item class="separador">
       <div class="containerImageNombre">
-        <ion-label class="nombreUsuario" color="medium">Henry Frias Baldelomar</ion-label>
+        <ion-label class="nombreUsuario" color="medium">{{this.repartidor_id}}</ion-label>
       </div>
     </ion-item>
 
@@ -49,70 +46,154 @@
 
   <ion-content>
 
+
+
     <ion-list class="lista">
-      <ion-item>
-        <div>
-          <ion-label class="label">Cliente:</ion-label>
+
+      <ion-item class="input">
+        <ion-input value="{{ date | date: 'dd.MM.yyyy' }}" id="date" placeholder="Selecione una Fecha de Entrega">
+        </ion-input>
+      </ion-item>
+      <ion-popover trigger="date" size="cover">
+        <ng-template>
+          <ion-datetime presentation="date" [(ngModel)]="date" [showDefaultButtons]="true" doneText="Aceptar"
+            cancelText="Cancelar">
+
+          </ion-datetime>
+        </ng-template>
+      </ion-popover>
+
+      <ion-item >
+        <div class="display">
+          <div>
+            <ion-label class="label">Cliente: {{clienteElegido.nombre_usu}}</ion-label>
+            <ion-button shape="round" color="primary" (click)="buscarCliente(true)" class="textBoton">Seleccionar Cliente
+            </ion-button>
+          </div>
+          <div class="boton">
+            <ion-button size="small" shape="round" color="primary" class="textBoton" (click)="agregarProducto(true)">Agregar Producto
+            </ion-button>
+          </div>
         </div>
       </ion-item>
 
-      <ion-searchbar
-     ></ion-searchbar>
+      <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+      <div class="container">
+        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
+      </div>
+    </div>
+-->
 
+      <ion-item *ngFor="let item of carrito">
+        <ion-grid>
+          <ion-row>
+            <ion-col size="8">
+              <ion-label class="wrap">{{item.producto_nombre}} </ion-label>
+            </ion-col>
+            <ion-col size="2">
+              <ion-label>x{{item.cantidad}} </ion-label>
+            </ion-col>
+            <ion-col>
+              <ion-icon (click)="eliminarProducto(item)" name="trash-sharp" color="danger"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
 
-    <ion-item *ngFor="let product of productos ">
+      <ion-select (ionChange)='seleccionarDireccion($event)' placeholder="Selecione su Dirección"
+        [interfaceOptions]="customAlertOptions" interface="alert" class="input">
+        <ion-select-option *ngFor="let direccion of clienteElegido.direccion" value="{{direccion.id_direc}}">
+          {{ direccion.nombre_direc }}
+        </ion-select-option>
+      </ion-select>
 
-      <div class="flexContainer">
-        <div>
-          <ion-grid>
-            <ion-row>
-              <ion-col>
-                <ion-thumbnail>
-                  <ion-img [src]="product.producto_foto"></ion-img>
-                </ion-thumbnail>
-              </ion-col>
-              <ion-col>
-                <ion-label>{{product.producto_nombre}} </ion-label>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </div>
-
-        <div class="icon-div">
-          <div class="iconn">
-            <ion-icon (click)="addCart(product.producto_id, product.producto_nombre)" name="cart-outline" color="primary"></ion-icon>
-          </div>
-        </div>
-
+      <div class="botonPedido">
+        <ion-button [disabled]="this.carrito.length<1" shape="round" color="primary" class="textBoton"
+          (click)="hacerPedido()" class="last-element">REALIZAR PEDIDO</ion-button>
       </div>
 
-    </ion-item>
-
- 
-
-    <ion-item *ngFor="let item of carrito.productos">
-      <ion-grid>
-        <ion-row>
-          <ion-col size="8">
-            <ion-label>{{item.producto_nombre}} </ion-label>
-          </ion-col>
-          <ion-col size="2">
-            <ion-label>x{{item.cantidad}} </ion-label>
-          </ion-col>
-          <ion-col>
-            <ion-icon (click)="eliminarProducto(item)" name="trash-sharp" color="danger"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
 
     </ion-list>
 
-    <div class="boton">
-      <ion-button [disabled]="this.carrito.productos.length<1" shape="round" color="primary"
-        (click)="hacerPedido(date)" class="textBoton">REALIZAR PEDIDO</ion-button>
+
+    <ion-modal [isOpen]="isModalOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-title>Lista de Clientes</ion-title>
+            <ion-buttons slot="end" (click)="buscarCliente(false)">
+              <ion-icon name="close" class="icon"></ion-icon>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content class="ion-padding">
+
+          <ion-input placeholder="Nombre Cliente" [(ngModel)]="searchTerm"></ion-input>
+
+<!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+      <div class="container">
+        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
+      </div>
     </div>
-  
+-->
+
+          <ion-list>
+            <ion-item *ngFor="let cliente of clientes | filter: searchTerm" (click)="elegirCliente(cliente)">
+              {{cliente.nombre_usu}}
+            </ion-item>
+          </ion-list>
+
+        </ion-content>
+
+      </ng-template>
+    </ion-modal>
+
+    <ion-modal [isOpen]="carritoOpen">
+      <ng-template>
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-title>Lista de Productos</ion-title>
+            <ion-buttons slot="end" (click)="agregarProducto(false)">
+              <ion-icon name="close" class="icon"></ion-icon>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+        <ion-content>
+
+          <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+      <div class="container">
+        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
+      </div>
+    </div>
+-->
+          <ion-item *ngFor="let product of productos">
+
+            <div class="flexContainer">
+              
+                <ion-grid>
+                  <ion-row class="content">
+                    <ion-col size="2">
+                      <ion-thumbnail>
+                        <ion-img [src]="product.foto_prod"></ion-img>
+                      </ion-thumbnail>
+                    </ion-col>
+                    <ion-col size="8">
+                      <ion-label class="wrap">{{product.nombre_prod}} </ion-label>
+                    </ion-col>
+                    <ion-col size="2" class="icon">
+                      <ion-icon (click)="addCart(product.id_prod, product.nombre_prod)" name="cart-outline" color="primary">
+                      </ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+
+            </div>
+
+          </ion-item>
+        </ion-content>
+      </ng-template>
+    </ion-modal>
+
 
   </ion-content>
 

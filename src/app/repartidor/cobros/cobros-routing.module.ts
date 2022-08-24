@@ -5,7 +5,7 @@ import { CobrosPage } from './cobros.page';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':id',
     component: CobrosPage
   }
 ];

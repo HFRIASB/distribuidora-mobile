@@ -13,6 +13,7 @@ import { Direccion } from 'src/app/models/direccion';
   styleUrls: ['./direccion-vista.page.scss'],
 })
 export class DireccionVistaPage implements OnInit {
+  image= "../../../assets/icon/logoEmpresa.png"
 
   id_usuario = null;//id
 

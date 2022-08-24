@@ -23,7 +23,5 @@ export class Orden {
 
     direccion: Direccion;
 
-    controlEnvase: ControlEnvase[];
-
     ordenProducto: OrdenProducto[];
 }

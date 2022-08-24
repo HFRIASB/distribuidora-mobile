@@ -11,7 +11,7 @@
     </div>
     <ion-item class="separador">
       <div class="containerImageNombre">
-        <ion-label class="nombreUsuario" color="medium">Henry Frias Baldelomar</ion-label>
+        <ion-label class="nombreUsuario" color="medium">{{user.nombre_usu}}</ion-label>
       </div>
     </ion-item>
 
@@ -45,19 +45,19 @@
   </ion-header>
   
   <ion-content>
+
+    <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+      <div class="container">
+        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
+      </div>
+    </div>
+-->
   
     <ion-item *ngFor="let pedido of pedidos">
   
   
       <div class="flexContainer">
         <div>
-         <!-- <ion-list>
-            <ion-item>
-              <ion-label>{{pedido.cliente.cliente_nombre}} </ion-label>
-              <ion-label>{{pedido.entrega_fecha}} </ion-label>
-              <ion-label>{{pedido.pedido_estado}} </ion-label>
-            </ion-item>
-          </ion-list> -->  
           <ion-grid (click)="abrirPedido(pedido)">
             <ion-row class="nombrePedido">
               <ion-label>Fecha de Pedido: </ion-label>

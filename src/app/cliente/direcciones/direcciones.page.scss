@@ -2,10 +2,6 @@
     width: 60%;
 }
 
-.direccionItem {
-    width: 100%;
-}
-
 .containerImage {
     width: 100%;
     display: flex;
@@ -24,9 +20,7 @@
 .flexContainer {
     height: 90%;
     display: flex;
-    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     width: 100%;
 }
 
@@ -53,16 +47,43 @@
     margin: 5px;
 }
 
-
 .nombreDirec {
-    margin-left: 1px;
-}
-.descripcionDireccion {
     margin-left: 1px;
 }
 
 .direccionContenedor {
     margin: 1px;
 }
+
+.marginBotton{
+    margin-bottom: 50px;
+}
+
+.wrap{
+    white-space: normal;
+}
+
+.btnCenter{
+    text-align: center;
+}
+
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    width: 80%;
+}
+
+.flexContainerCenter{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    height: 90%;
+}
+
 
 

@@ -1,8 +1,5 @@
 <ion-menu side="start" menuId="first" contentId="main">
   <ion-header>
-   <!-- <ion-toolbar color="primary">
-      <ion-title>OPCIONES</ion-title>
-    </ion-toolbar>-->
   </ion-header>
   <ion-content>
 
@@ -13,7 +10,7 @@
     </div>
     <ion-item class="separador">
       <div class="containerImageNombre">
-        <ion-label class="nombreUsuario" color="medium">Henry Frias Baldelomar</ion-label>
+        <ion-label class="nombreUsuario" color="medium">{{usuario_repartidor.nombre_usu}}</ion-label>
       </div>
     </ion-item>
 
@@ -47,28 +44,32 @@
   </ion-header>
   
   <ion-content>
+
+  <div *ngIf="ordenes.length == 0" class="flexContainerCenter">
+    <div class="container">
+      <ion-label class="text" >"Por el momento no se encuentra con ordenes pendientes" </ion-label>
+    </div>
+  </div>
+
+  <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+      <div class="container">
+        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
+      </div>
+    </div>
+-->
   
-    <ion-item *ngFor="let pedido of pedidos">
-  
-  
+    <ion-item *ngFor="let orden of ordenes">
       <div class="flexContainer">
         <div>
-         <!-- <ion-list>
-            <ion-item>
-              <ion-label>{{pedido.cliente.cliente_nombre}} </ion-label>
-              <ion-label>{{pedido.entrega_fecha}} </ion-label>
-              <ion-label>{{pedido.pedido_estado}} </ion-label>
-            </ion-item>
-          </ion-list> -->  
-          <ion-grid (click)="abrirPedido()">
+          <ion-grid (click)="abrirPedido(orden.id_ord)">
             <ion-row class="nombrePedido">
-              <ion-label>{{pedido.cliente.cliente_nombre}} </ion-label>
+              <ion-label>{{orden.usuario.nombre_usu}} </ion-label>
             </ion-row>
             <ion-row class="fechaPedido">
-              <ion-label>{{pedido.entrega_fecha}} </ion-label>
+              <ion-label>Entrega: {{orden.fEntrega_ord}} </ion-label>
             </ion-row>
             <ion-row class="estadoPedido">
-              <ion-label>{{pedido.pedido_estado}} </ion-label>
+              <ion-label>{{orden.estado_ord}} </ion-label>
             </ion-row>
           </ion-grid>      
         </div>
