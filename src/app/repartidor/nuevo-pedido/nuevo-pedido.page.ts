@@ -17,7 +17,7 @@ import { ProductoService } from 'src/app/services/producto.service';
   styleUrls: ['./nuevo-pedido.page.scss'],
 })
 export class NuevoPedidoPage implements OnInit {
-  image= "../../../assets/icon/logoEmpresa.png"
+  image = "../../../assets/icon/logoEmpresa.png"
 
   buscado: string;
 
@@ -30,7 +30,7 @@ export class NuevoPedidoPage implements OnInit {
   date = null;
 
   carrito = [];
-  repartidor_id = null;
+  repartidor = new Usuario();
   searchTerm: string = '';
 
   buscarCliente(isOpen) {
@@ -46,8 +46,9 @@ export class NuevoPedidoPage implements OnInit {
     private ordenService: OrdenService,
     private ordenProductoService: OrdenProductoService) {
     this.route.params.subscribe(params => {
-      this.repartidor_id = params.id
-      console.log(params)
+      this.authService.getUsuarioById(params.id).subscribe((data: Usuario) => {
+        this.repartidor = data
+      })
     })
     this.productoService.getTodoProductos().subscribe((data: Producto[]) => {
       this.productos = data
@@ -74,14 +75,21 @@ export class NuevoPedidoPage implements OnInit {
       direccion: Number(this.direccionElegida)
     }
     this.ordenService.postOrden(orden).subscribe(data => {
-      console.log(data)
-      this.carrito.forEach(element => {
+      this.carrito.forEach((element, index) => {
         let producto = {
           cantidad_op: element.cantidad,
           orden: data,
           producto: element.producto_id
         }
         this.ordenProductoService.postOrdenProducto(producto).subscribe(data1 => {
+          if (index == this.carrito.length - 1) {
+            this.presentToast("Pedido realizado exitosamente", "primary");
+            this.router.navigate(['/pedidos', this.repartidor.id_usu],
+              {
+                relativeTo: this.route,
+                replaceUrl: true
+              });
+          }
         })
       })
     })
@@ -92,9 +100,10 @@ export class NuevoPedidoPage implements OnInit {
   }
 
   elegirCliente(cliente) {
-    this.clienteElegido = cliente
-    console.log(this.date)
+    this.direccionElegida = null;
+    this.clienteElegido = cliente;
     this.isModalOpen = false;
+    this.presentToast("Selecione una dirección", "secondary");
   }
 
   async presentToast(texto, color) {
@@ -156,7 +165,7 @@ export class NuevoPedidoPage implements OnInit {
   }
 
   goPedidos() {
-    this.router.navigate(['/pedidos', this.repartidor_id],
+    this.router.navigate(['/pedidos', this.repartidor.id_usu],
       {
         relativeTo: this.route,
         replaceUrl: true
@@ -164,7 +173,7 @@ export class NuevoPedidoPage implements OnInit {
   }
 
   goCobros() {
-    this.router.navigate(['/cobros', this.repartidor_id],
+    this.router.navigate(['/cobros', this.repartidor.id_usu],
       {
         relativeTo: this.route,
         replaceUrl: true

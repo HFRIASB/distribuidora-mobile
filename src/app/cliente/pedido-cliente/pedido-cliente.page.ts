@@ -36,6 +36,7 @@ export class PedidoClientePage implements OnInit {
         pedidos.forEach(pedido => {
           this.pedidos.push(this.ordenService.transformarDate(pedido))
         });
+        console.log(this.pedidos)
       })
     });
   }

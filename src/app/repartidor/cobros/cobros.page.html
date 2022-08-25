@@ -10,7 +10,7 @@
     </div>
     <ion-item class="separador">
       <div class="containerImageNombre">
-        <ion-label class="nombreUsuario" color="medium">{{this.repartidor_id}}</ion-label>
+        <ion-label class="nombreUsuario" color="medium">{{this.repartidor.nombre_usu}}</ion-label>
       </div>
     </ion-item>
 
@@ -45,19 +45,19 @@
 
   <ion-content>
 
-    <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+    <div *ngIf="clientes.length == 0" class="flexContainerCenter">
       <div class="container">
-        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
+        <ion-label class="text" >"Aun no se registraron clientes con deudas" </ion-label>
       </div>
     </div>
--->
+
 
     <div *ngFor="let cliente of clientes">
       <div class="card" (click)="goDetalleCobro(cliente)">
        <ion-label class="nombre">{{cliente.nombre_usu}}</ion-label>
-       <ion-label>Deuda: {{cliente.deuda_usu}}</ion-label>
+       <ion-label>Deuda: {{cliente.deuda_usu}} Bs.</ion-label>
        <ion-label>{{cliente.observacion_usu}}</ion-label>
-       <ion-label>{{cliente.celular_usu}}</ion-label>
+       <ion-label>Contacto: {{cliente.celular_usu}}</ion-label>
       </div>
      
     </div>

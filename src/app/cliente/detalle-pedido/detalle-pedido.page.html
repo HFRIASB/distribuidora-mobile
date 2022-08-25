@@ -58,12 +58,6 @@
       <ion-label>Lista de Productos</ion-label>
     </div>
 
-    <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
-      <div class="container">
-        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
-      </div>
-    </div>
--->
     <ion-item *ngFor="let pedido of orden.ordenProducto">
       <div class="flexContainer">
           <ion-grid>

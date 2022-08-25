@@ -43,13 +43,6 @@
       <ion-label>Productos Solicitados </ion-label>
     </div>
 
-    <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
-      <div class="container">
-        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
-      </div>
-    </div>
--->
-
     <ion-item *ngFor="let produ of orden.ordenProducto">
       <ion-grid class="grid">
 
@@ -66,11 +59,13 @@
         </ion-row>
 
       </ion-grid>
-      <div class="margin"></div>
 
     </ion-item>
-    <ion-label class="monto">Monto cobrado:</ion-label>
-    <ion-item class="input">
+    <div class="margin">
+      <ion-label class="monto">Monto cobrado:</ion-label>
+
+    </div>
+     <ion-item class="input">
       <ion-input type="number" [value]="monto_cobrado" (input)="setQuantity($event.target.value)"
         placeholder="Ingrese el monto cobrado"></ion-input>
     </ion-item>

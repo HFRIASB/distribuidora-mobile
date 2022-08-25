@@ -38,14 +38,19 @@ export class RegisterPage implements OnInit {
     fRegistro_usu: new Date(),
     rol: 3//////////////Corregir con back
     }
-    this.authService.registrarUsuario(usuario)
+    if (form.value.verificarPassword == form.value.password) {
+      this.authService.registrarUsuario(usuario)
     .subscribe(datosResponce =>{
       this.alertSaveOrden();
-
     },(error)=>{
       this.presentToast("Ocurrió un error, vuelva intentar", 'danger');
-      //toast"error"
+
     })
+    }else{
+      this.presentToast("Las contraseñas ingresadas son diferentes, verifique las que las contraseñas sena iguales", 'danger');
+
+    }
+    
  
   }
 
@@ -74,7 +79,7 @@ export class RegisterPage implements OnInit {
   async presentToast(texto, color) {
     const toast = await this.toastController.create({
       message: texto,
-      duration: 2000,
+      duration: 3000,
       color: color,
     });
     toast.present();

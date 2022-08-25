@@ -31,7 +31,19 @@
     width: 60%;
 }
 
-.label{
+.labelFecha{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+.labelCliente{
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-left: 10px;
+}
+
+.labelDireccion{
     margin-top: 10px;
     margin-bottom: 5px;
     margin-left: 10px;
@@ -76,8 +88,9 @@
     margin-top: 15px;
     margin-left: 15px;
     border: solid;
-   // background-color: gray;
-  }
+    border-width: 1px;
+    border-color: gray;
+}
 
   .wrap{
     white-space: normal;

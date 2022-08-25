@@ -4,7 +4,7 @@ import { GoogleMap } from '@capacitor/google-maps';
 import { environment } from 'src/environments/environment';
 import { ToastController } from '@ionic/angular';
 import { DireccionService } from 'src/app/services/direccion.service';
-
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'app-nueva-direccion',
@@ -36,6 +36,7 @@ export class NuevaDireccionPage implements OnInit {
     };
 
   constructor(private router: Router,
+    private alertController: AlertController,
     public toastController: ToastController,
     private route: ActivatedRoute,
     private direccionService: DireccionService) {
@@ -137,9 +138,9 @@ export class NuevaDireccionPage implements OnInit {
     this.direccionService.postDireccion(nuevaDireccion).subscribe(datos=>{
       this.presentToast("Dirección agregada exitosamente", 'primary');
       this.isModalOpen = false;
+      this.alertSaveDireccion();
+      
     });
-    //this.router.navigate(['/direcciones', this.id_usuario], { relativeTo: this.route, replaceUrl: true })
-    console.log("guardado")
   }
 
   async presentToast(texto, color) {
@@ -150,6 +151,21 @@ export class NuevaDireccionPage implements OnInit {
     });
     toast.present();
   }
+
+  async alertSaveDireccion() {
+    const alert = await this.alertController.create({
+      header: 'Dirección Guardada',
+      message: 'Dirección guardada exitosamente, será redireccionado a su lista de direcciones',
+      buttons: [{
+        text: "OK",
+        handler: () => {
+          this.router.navigate(['/direcciones', this.id_usuario], { relativeTo: this.route, replaceUrl: true })
+        }
+      }],
+    });
+    await alert.present();
+  }
+
 
   goBack() {
     this.router.navigate(['/direcciones', this.id_usuario], { relativeTo: this.route, replaceUrl: true })

@@ -45,15 +45,11 @@ export class HomePage implements OnInit {
     this.orden.ordenProducto = [];
     this.getProductos();
     this.route.params.subscribe(params => {
-      //console.log(params)//
-      //this.id_usuario = params.idUsuario;//id
-      //this.orden.usuario = Number(params.idUsuario);
       this.authService.getUsuarioDireccion(params.idUsuario).subscribe((params: Direccion[]) => {
         this.direcciones = params;
-       // console.log(this.orden)//
       })
       this.authService.getUsuarioById(params.idUsuario).subscribe((user: Usuario)=>{
-        console.log(user)
+    
         this.orden.usuario = user;
       })
     });

@@ -46,14 +46,13 @@
     </ion-toolbar>
   </ion-header>
 
-  <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
-      <div class="container">
-        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
-      </div>
-    </div>
--->
-
   <ion-content>
+    
+  <div *ngIf="productos.length == 0" class="flexContainerCenter">
+    <div class="container">
+      <ion-label >"Por el momento no contamos con productos a la venta, favor regrese mas tarde" </ion-label>
+    </div>
+  </div>
     <div *ngFor="let product of productos">
       <ion-grid>
         <ion-row class="borde">
@@ -91,13 +90,6 @@
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
-
-          <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
-      <div class="container">
-        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
-      </div>
-    </div>
--->
 
           <ion-item *ngFor="let item of orden.ordenProducto">
             <ion-grid>
@@ -154,7 +146,7 @@
                 </ion-item>
               </ion-row>
               <div class="boton">
-                <ion-button [disabled]="this.orden.ordenProducto.length<1" shape="round" color="primary"
+                <ion-button [disabled]="this.orden.ordenProducto.length<1 || this.orden.direccion==null || date==null" shape="round" color="primary"
                   (click)="hacerPedido(date)" class="textBoton" size="large">REALIZAR ENTREGA</ion-button>
               </div>
             </ion-grid>

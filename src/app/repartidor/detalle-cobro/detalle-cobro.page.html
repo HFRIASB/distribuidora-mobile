@@ -15,25 +15,26 @@
     <ion-label>Celular: {{cliente.celular_usu}}</ion-label>
     <ion-label>Nro Documento: {{cliente.nroDocu_usu}}</ion-label>
   </div>
-
-  <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+  <div>
+    <div *ngIf="cliente.pago.length == 0" class="flexContainerCenter">
       <div class="container">
-        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
+        <ion-label class="text">"El cliente no tiene ningún pago realizado" </ion-label>
       </div>
     </div>
--->
 
-  <div *ngFor="let pago of cliente.pago; let i=index">
-    <div *ngIf="i==0" class="table">
-      <ion-label class="cell-class montoTitle">Monto en Bs.</ion-label>
-      <ion-label class="cell-class fechaTitle">Fecha de Pago</ion-label>
-    </div>
-    <div class="table">
-      <ion-label class="cell-class monto">{{pago.cantidad_pago}} Bs.</ion-label>
-      <ion-label class="cell-class fecha">{{pago.fecha_pago}}</ion-label>
+    <div *ngFor="let pago of cliente.pago; let i=index">
+      <div *ngIf="i==0" class="table">
+        <ion-label class="cell-class montoTitle">Monto en Bs.</ion-label>
+        <ion-label class="cell-class fechaTitle">Fecha de Pago</ion-label>
+      </div>
+      <div class="table">
+        <ion-label class="cell-class monto">{{pago.cantidad_pago}} Bs.</ion-label>
+        <ion-label class="cell-class fecha">{{pago.fecha_pago}}</ion-label>
+      </div>
     </div>
   </div>
-<div class="btn">
-  <ion-button shape="round" color="primary" (click)="realizarPagoAlert()" class="textBoton">HACER PAGO</ion-button>
-</div>
-  </ion-content>
+
+  <div class="btn">
+    <ion-button shape="round" color="primary" (click)="realizarPagoAlert()" class="textBoton">HACER PAGO</ion-button>
+  </div>
+</ion-content>

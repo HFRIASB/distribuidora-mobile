@@ -5,6 +5,7 @@ import { Usuario } from 'src/app/models/usuario';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToastController } from '@ionic/angular';
 import { OrdenService } from 'src/app/services/orden.service';
+import { Rol } from 'src/app/models/rol';
 
 @Component({
   selector: 'app-detalle-cobro',
@@ -12,9 +13,9 @@ import { OrdenService } from 'src/app/services/orden.service';
   styleUrls: ['./detalle-cobro.page.scss'],
 })
 export class DetalleCobroPage implements OnInit {
-  image= "../../../assets/icon/logoEmpresa.png"
+  image = "../../../assets/icon/logoEmpresa.png"
 
-  idRepartidor = null;
+  repartidor:Usuario = new Usuario();
   cliente: Usuario = new Usuario();
 
   constructor(
@@ -25,10 +26,17 @@ export class DetalleCobroPage implements OnInit {
     private alertController: AlertController,
     private ordenService: OrdenService
   ) {
+    this.cliente.pago = []
+
+    console.log(this.repartidor.rol)
     this.route.params.subscribe(params => {
-      this.idRepartidor = params.id_repartidor
+      this.authService.getUsuarioById(params.id_repartidor).subscribe((repartidor: Usuario) => {
+        this.repartidor = repartidor
+        
+      })
       this.authService.getDetalleCliente(params.id_cliente).subscribe((cliente: Usuario) => {
         this.cliente = cliente;
+
         this.cliente.pago = this.ordenService.transformarFechaPago(cliente.pago)
       })
     })
@@ -88,7 +96,7 @@ export class DetalleCobroPage implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/cobros', this.idRepartidor], { relativeTo: this.route, replaceUrl: true })
+    this.router.navigate(['/cobros', this.repartidor.id_usu], { relativeTo: this.route, replaceUrl: true })
   }
 
 }

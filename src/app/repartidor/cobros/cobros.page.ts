@@ -12,7 +12,8 @@ import { Usuario } from 'src/app/models/usuario';
 export class CobrosPage implements OnInit {
   image= "../../../assets/icon/logoEmpresa.png"
   clientes:Usuario[]=[];
-  repartidor_id = null;
+  
+  repartidor = new Usuario();
 
   constructor(
     private alertController: AlertController,
@@ -20,7 +21,10 @@ export class CobrosPage implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService ) { 
       this.route.params.subscribe(params => {
-        this.repartidor_id = params.id
+        this.authService.getUsuarioById(params.id).subscribe((data: Usuario)=>{
+          this.repartidor=data
+          console.log(this.repartidor)
+        })
       })
       this.authService.getOnlyClientes().subscribe((clientes: Usuario[])=>{
         this.clientes = clientes;
@@ -57,7 +61,7 @@ export class CobrosPage implements OnInit {
   }
 
   goNuevoPedido(){
-    this.router.navigate(['/nuevo-pedido', this.repartidor_id],//id
+    this.router.navigate(['/nuevo-pedido', this.repartidor.id_usu],//id
     {
       relativeTo: this.route,
       replaceUrl: true
@@ -65,7 +69,7 @@ export class CobrosPage implements OnInit {
   }
 
   goPedidos(){
-    this.router.navigate(['/pedidos', this.repartidor_id],
+    this.router.navigate(['/pedidos', this.repartidor.id_usu],
     {
       relativeTo: this.route,
       replaceUrl: true
@@ -73,7 +77,7 @@ export class CobrosPage implements OnInit {
   }
 
   goDetalleCobro(cliente: Usuario){
-    this.router.navigate(['/detalle-cobro', this.repartidor_id, cliente.id_usu.toString()], 
+    this.router.navigate(['/detalle-cobro', this.repartidor.id_usu, cliente.id_usu.toString()], 
     {
       relativeTo: this.route,
       replaceUrl: true

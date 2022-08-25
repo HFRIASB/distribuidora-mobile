@@ -51,12 +51,11 @@
     </div>
   </div>
 
-  <!--<div *ngIf="pedido.length == 0" class="flexContainerCenter">
+  <div *ngIf="ordenes.length == 0" class="flexContainerCenter">
       <div class="container">
-        <ion-label class="text" >"Su pedido no tiene productos" </ion-label>
+        <ion-label class="text" >"No tiene ningún pedido pendiente" </ion-label>
       </div>
     </div>
--->
   
     <ion-item *ngFor="let orden of ordenes">
       <div class="flexContainer">
@@ -73,11 +72,9 @@
             </ion-row>
           </ion-grid>      
         </div>
-  
       </div>
-  
     </ion-item>
-  
+    <div class="marginBotton"></div>
   
   </ion-content>
 
