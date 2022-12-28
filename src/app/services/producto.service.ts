@@ -12,7 +12,7 @@ export class ProductoService {
   constructor( private http:HttpClient) { }
 
   getTodoProductos(): Observable<any> {
-  return this.http.get(this.api_url+'producto');
+  return this.http.get(this.api_url+'producto/activo');
   }
 
   getProductoId(id: number): Observable<any> {

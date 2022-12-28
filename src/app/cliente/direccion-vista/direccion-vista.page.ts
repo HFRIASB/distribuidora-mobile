@@ -23,8 +23,8 @@ export class DireccionVistaPage implements OnInit {
   mapRef: ElementRef<HTMLElement>;
   newMap: GoogleMap;
   center: any={ 
-    lat: -17.380771,
-    lng: -66.153296,}
+    lat: -17.331139,
+    lng: -66.226015,}
   markerId: string;
   handlerMessage = '';
   roleMessage = '';

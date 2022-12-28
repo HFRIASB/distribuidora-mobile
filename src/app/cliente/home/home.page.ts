@@ -44,13 +44,15 @@ export class HomePage implements OnInit {
     private authService: AuthService) {
     this.orden.ordenProducto = [];
     this.getProductos();
-    this.route.params.subscribe(params => {
-      this.authService.getUsuarioDireccion(params.idUsuario).subscribe((params: Direccion[]) => {
-        this.direcciones = params;
-      })
+    this.route.params.subscribe(params => {  
       this.authService.getUsuarioById(params.idUsuario).subscribe((user: Usuario)=>{
-    
         this.orden.usuario = user;
+        this.authService.getUsuarioDireccion(params.idUsuario).subscribe((params: Direccion[]) => {
+          this.direcciones = params;
+          if (params.length < 1) {
+            this.alertDirecciones()
+          }
+        })
       })
     });
   }
@@ -110,6 +112,20 @@ export class HomePage implements OnInit {
   handlerMessage = '';
   roleMessage = '';
 
+
+  async alertDirecciones() {
+    const alert = await this.alertController.create({
+      header: 'Advertencia',
+      message: 'Para poder realizar un pedido, debe tener almenos una dirección registrada.',
+      buttons: [{
+        text: "OK",
+        handler: () => {
+          this.goDirecciones();
+            }
+      }],
+    });
+    await alert.present();
+  }
   addCart(producto: Producto) {
     this.presentAlert(producto).then(() => {
     }).catch(e => { });

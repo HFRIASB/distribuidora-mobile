@@ -30,6 +30,10 @@ export class AuthService {
     })
   }
   
+  getRolByName(name: string){
+    return this.http.get(this.api_url+'rol/rolName/'+name)
+  }
+
   getUsuarioDireccion(id_user: number){
     return  this.http.get(`${this.api_url}usuario/direccion/${id_user}`);
   }

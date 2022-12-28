@@ -23,8 +23,8 @@ export class DireccionPedidoPage implements OnInit {
   center: any = {
     //lat: this.pedido.direccion.direccion_latitude,
     //lng: this.pedido.direccion.direccion_longitude,
-    lat: -17.401472,
-    lng: -66.155927,
+    lat: -17.331139,
+    lng: -66.226015
   };
   markerId: string;
   idRepartidor = null;
