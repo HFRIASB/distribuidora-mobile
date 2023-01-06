@@ -20,15 +20,11 @@ export class DireccionPedidoPage implements OnInit {
   @ViewChild('map3')
   mapRef: ElementRef<HTMLElement>;
   newMap: GoogleMap;
-  center: any = {
-    //lat: this.pedido.direccion.direccion_latitude,
-    //lng: this.pedido.direccion.direccion_longitude,
-    lat: -17.401472,
-    lng: -66.155927,
-  };
+  center: any;
   markerId: string;
   idRepartidor = null;
   orden: Orden = new Orden();
+  direccion: Direccion = new Direccion();
 
   constructor(
     private router: Router,
@@ -39,7 +35,10 @@ export class DireccionPedidoPage implements OnInit {
     this.route.params.subscribe(params => {
       this.idRepartidor = params.idUsuario
       this.ordenService.getOrdenWithDireccion(params.idOrden).subscribe((datos: Orden)=>{
-        this.orden = datos
+        console.log(datos.direccion,"estos")
+        this.orden=datos;
+        this.direccion = datos.direccion;
+        this.createMap(this.direccion)
       })
       
     })
@@ -48,18 +47,19 @@ export class DireccionPedidoPage implements OnInit {
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
-    this.createMap();
-  }
-
-  async createMap() {
+  async createMap(direccion) {
+    console.log("si agarraaaaa",direccion)
     try {
       this.newMap = await GoogleMap.create({
         id: 'capacitor-google-maps',
         element: this.mapRef.nativeElement,
         apiKey: environment.google_maps_api_key,
         config: {
-          center: this.center,
+          center: {
+            // The initial position to be rendered by the map
+            lat: Number(this.direccion.lat_direc),
+            lng: Number(this.direccion.lng_direc),
+          },
           zoom: 18,
         },
       });
@@ -67,7 +67,7 @@ export class DireccionPedidoPage implements OnInit {
       //Habilitar mi Ubicacion
       //await this.newMap.enableCurrentLocation(true);
 
-      this.addMarker(this.center.lat, this.center.lng);
+      this.addMarker(Number(this.direccion.lat_direc), Number(this.direccion.lng_direc));
     } catch (e) {
       console.log(e);
     }

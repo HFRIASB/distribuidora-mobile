@@ -9,6 +9,7 @@ import { Pago } from '../models/pago';
 export class OrdenService {
 
   api_url = 'http://localhost:3000/orden/'
+  api_url_producto = 'http://localhost:3000/'
 
   api_url_pago = 'http://localhost:3000/pago/'
 
@@ -38,6 +39,15 @@ export class OrdenService {
       estado_ord: estado
     }
     return this.http.patch(this.api_url + id_ord.toString(), nuevoEstado)
+  }
+  patchStockProducto(id: any, cantidad: any) {
+    return this.http.patch(this.api_url_producto + 'producto/' + id + '/cantidad/' + cantidad, null)
+  }
+  patchPedido(pedido:any){
+    let payload={
+
+    }
+    return this.http.patch(`${this.api_url}${pedido.id_ord}`, pedido)
   }
 
   hacerPago(id_usu: number, monto: number){

@@ -22,9 +22,7 @@ export class DireccionVistaPage implements OnInit {
   @ViewChild('map1')
   mapRef: ElementRef<HTMLElement>;
   newMap: GoogleMap;
-  center: any={ 
-    lat: -17.380771,
-    lng: -66.153296,}
+  center:any;
   markerId: string;
   handlerMessage = '';
   roleMessage = '';
@@ -38,9 +36,9 @@ export class DireccionVistaPage implements OnInit {
       this.route.params.subscribe(params => {
         console.log(params)//
         this.id_usuario = params.id_user;//id
-        this.direccionService.getDireccionById(params.id_direccion).subscribe((direccion: Direccion)=>{
-          this.direccion = direccion
-         
+        this.direccionService.getDireccionById(params.id_direccion).subscribe((direccion:Direccion)=>{
+          this.direccion=direccion;
+          this.createMap(this.direccion);
         })
       })
     }
@@ -48,18 +46,23 @@ export class DireccionVistaPage implements OnInit {
   ngOnInit() {
   }
 
-  ngAfterViewInit() {
-    this.createMap();
-  }
+  // ngAfterViewInit() {
+  //   this.createMap(this.direccion);
+  // }
 
-  async createMap() {
+  async createMap(direccion) {
     try {
       this.newMap = await GoogleMap.create({
         id: 'capacitor-google-maps',
         element: this.mapRef.nativeElement,
         apiKey: environment.google_maps_api_key,
         config: {
-          center: this.center,
+          
+          center: {
+            // The initial position to be rendered by the map
+            lat: Number(this.direccion.lat_direc),
+            lng: Number(this.direccion.lng_direc),
+          },
           zoom: 18,
         },
       });
@@ -67,7 +70,7 @@ export class DireccionVistaPage implements OnInit {
       //Habilitar mi Ubicacion
       //await this.newMap.enableCurrentLocation(true);
 
-      this.addMarker(this.center.lat, this.center.lng);
+      this.addMarker(Number(this.direccion.lat_direc), Number(this.direccion.lng_direc));
     } catch (e) {
       console.log(e);
     }

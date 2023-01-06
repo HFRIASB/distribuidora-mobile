@@ -55,24 +55,26 @@
   </div>
     <div *ngFor="let product of productos">
       <ion-grid>
-        <ion-row class="borde">
-          <ion-col size="2">
-            <ion-thumbnail>
-              <ion-img [src]="product.foto_prod"></ion-img>
-            </ion-thumbnail>
-          </ion-col>
+        <ion-card>
+          <ion-row class="center">
+            <ion-img class="image" [src]="product.foto_prod"></ion-img>
+          </ion-row>
+          <ion-row class="borde">
           <ion-col size="8">
             <ion-row>
               <ion-label class="wrap">{{product.nombre_prod}} </ion-label>
             </ion-row>
             <ion-row>
-              <ion-label color="medium">{{product.uniMedida_prod}} </ion-label>
+              <ion-label  class="subtitle" color="medium">{{product.uniMedida_prod}} </ion-label>
             </ion-row>
           </ion-col>
           <ion-col size="2" class="icon">
             <ion-icon (click)="addCart(product)" name="cart-outline" color="primary"></ion-icon>
           </ion-col>
         </ion-row>
+        </ion-card>
+        
+          
       </ion-grid>
     </div>
     <div class="marginBotton">

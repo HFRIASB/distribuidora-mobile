@@ -12,6 +12,7 @@ import { Direccion } from 'src/app/models/direccion';
 import { ControlEnvase } from 'src/app/models/control-envase';
 import { ControlEnvaseService } from 'src/app/services/control-envase.service';
 import { TipoEnvase } from 'src/app/models/tipo-envase';
+import { OrdenProducto } from 'src/app/models/orden-producto';
 
 @Component({
   selector: 'app-pedido-vista',
@@ -27,6 +28,7 @@ export class PedidoVistaPage implements OnInit {
   controlEnvases = [];
   controlEnvase = new ControlEnvase;
   tiposEnvases = [];
+  
 
 
   constructor(private router: Router,
@@ -74,22 +76,36 @@ export class PedidoVistaPage implements OnInit {
 
   btnEntregado() {
     //Actualizar estado orden, agregar pago
-    this.ordenService.updateEstadoOrden(this.orden.id_ord, "Entregado").subscribe(dato => {
-      if (this.monto_cobrado > 0 && this.monto_cobrado != null) {
-        this.ordenService.hacerPago(this.orden.usuario.id_usu, this.monto_cobrado).subscribe(resp => {
-          this.presentToast("Pedido Entregado Exitosamente", 'primary');
-          this.goBack();
-        }, error => {
-          this.presentToast("Hubo un error al entregar su pedido", 'danger');
+    let payload = {
+      id_ord: this.orden.id_ord,
+      estado_ord: "Entregado"
+    }
+    this.ordenService.patchPedido(payload).subscribe(data=>{
+      this.orden.ordenProducto.forEach((op:OrdenProducto,index) => {
+        this.ordenService.patchStockProducto(op.producto?.id_prod,-op.cantidad_op)
+        .subscribe(op=>{
+          if(this.orden.ordenProducto.length -1 == index){
+            this.router.navigate(['/pedidos', this.idRepartidor], { relativeTo: this.route, replaceUrl: true })
+          }
         })
-      } else {
-        this.presentToast("Pedido Entregado Exitosamente", 'primary');
-        this.goBack();
-      }
-
-    }, error => {
-      this.presentToast("Hubo un error al entregar su pedido", 'danger');
+      });
     })
+    // this.ordenService.updateEstadoOrden(this.orden.id_ord, "Entregado").subscribe(dato => {
+    //   if (this.monto_cobrado > 0 && this.monto_cobrado != null) {
+    //     this.ordenService.hacerPago(this.orden.usuario.id_usu, this.monto_cobrado).subscribe(resp => {
+    //       this.presentToast("Pedido Entregado Exitosamente", 'primary');
+    //       this.goBack();
+    //     }, error => {
+    //       this.presentToast("Hubo un error al entregar su pedido", 'danger');
+    //     })
+    //   } else {
+    //     this.presentToast("Pedido Entregado Exitosamente", 'primary');
+    //     this.goBack();
+    //   }
+
+    // }, error => {
+    //   this.presentToast("Hubo un error al entregar su pedido", 'danger');
+    // })
 
   }
 
@@ -110,14 +126,31 @@ export class PedidoVistaPage implements OnInit {
   }
 
   agregarControl(){
-    console.log(this.controlEnvase)
-    this.controlEnvaseService.postControlEnvase(this.controlEnvase).subscribe(data=>{
- //AgregarAlert su control fue registrado correctamente
-      this.controlEnvase.estado_ce = null;
-      this.controlEnvase.cantEnvase_ce = 0;
-      this.controlEnvase.tipEnvase_ce = null;
-      this.controlEnvasesOpen = false;
-    })
+    if (this.controlEnvase.cantEnvase_ce && this.controlEnvase.tipEnvase_ce != undefined) {
+      let payload = {
+        garantia: this.controlEnvase.motivo_ce == 'Salida' ? this.controlEnvase.garantia_ce : 0,
+        cantEnvase_ce: this.controlEnvase.cantEnvase_ce,
+        motivo_ce: this.controlEnvase.estado_ce,
+        fecha_ce: this.controlEnvase.fecha_ce,
+        usuario: this.controlEnvase.usuario,
+        orden: this.orden.id_ord,
+        tipoEnvase: this.controlEnvase.tipEnvase_ce
+      }
+      this.controlEnvaseService.postControlEnvase(payload)
+        .subscribe(data => {
+          window.location.reload();
+        })
+    } else {
+      console.log('alert ingrese los datos correctamente')
+    }
+//     console.log(this.controlEnvase)
+//     this.controlEnvaseService.postControlEnvase(this.controlEnvase).subscribe(data=>{
+//  //AgregarAlert su control fue registrado correctamente
+//       this.controlEnvase.estado_ce = null;
+//       this.controlEnvase.cantEnvase_ce = 0;
+//       this.controlEnvase.tipEnvase_ce = null;
+//       this.controlEnvasesOpen = false;
+//     })
   }
   
 

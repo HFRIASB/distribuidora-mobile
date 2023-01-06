@@ -39,6 +39,15 @@
 .logo {
     width: 100%;
 }
+.image{
+    height: 100px !important;
+}
+
+.center{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
 
 .containerImage {
     width: 100%;
@@ -76,6 +85,12 @@
 
 .wrap{
     white-space: normal;
+    font-size: 25px;
+    margin-left: 5%;
+}
+.subtitle{
+    font-size: 15px;
+    margin-left: 5%;
 }
 
 .marginBotton{
