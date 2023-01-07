@@ -135,7 +135,7 @@
                 <ion-label>Seleccione Dirección</ion-label>
               </ion-row>
               <ion-row>
-                <ion-item class="input" placeholder="Selecione Dirección">
+                <ion-item class="input" placeholder="Seleccione Dirección">
 
 
                   <ion-select [(ngModel)]="orden.direccion" (ionChange)='seleccionarDireccion($event)'
@@ -149,7 +149,7 @@
               </ion-row>
               <div class="boton">
                 <ion-button [disabled]="this.orden.ordenProducto.length<1 || this.orden.direccion==null || date==null" shape="round" color="primary"
-                  (click)="hacerPedido(date)" class="textBoton" size="large">REALIZAR ENTREGA</ion-button>
+                  (click)="hacerPedido(date)" class="textBoton" size="large">REALIZAR PEDIDO</ion-button>
               </div>
             </ion-grid>
           </ion-item>

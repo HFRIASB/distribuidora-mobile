@@ -32,6 +32,7 @@ export class NuevoPedidoPage implements OnInit {
   carrito = [];
   repartidor = new Usuario();
   searchTerm: string = '';
+customAlertOptions: any;/////////////////////////
 
   buscarCliente(isOpen) {
     this.isModalOpen = isOpen;
@@ -103,7 +104,7 @@ export class NuevoPedidoPage implements OnInit {
     this.direccionElegida = null;
     this.clienteElegido = cliente;
     this.isModalOpen = false;
-    this.presentToast("Selecione una dirección", "secondary");
+    this.presentToast("Selecione una dirección", "primary");
   }
 
   async presentToast(texto, color) {

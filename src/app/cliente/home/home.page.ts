@@ -32,6 +32,7 @@ export class HomePage implements OnInit {
     direccion: null,
     ordenProducto: []
   }
+date: any;////////////////////////////////////////////////
 
   constructor(
     private router: Router,
