@@ -2,7 +2,10 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: 50px;
+    margin-top: 30px;
+}
+.logo {
+    width: 100%;
 }
 
 .containerImageNombre{
@@ -25,10 +28,6 @@
 .icon {
     font-size: xx-large;
     margin-top: 8px;
-}
-
-.logo {
-    width: 60%;
 }
 
 .labelFecha{
