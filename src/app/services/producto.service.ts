@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ProductoService {
 
-  api_url='http://localhost:3000/'
+  api_url='https://distribuidora-aiol-api.herokuapp.com/'
 
   constructor( private http:HttpClient) { }
 

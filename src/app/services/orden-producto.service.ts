@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class OrdenProductoService {
 
-  api_url='http://localhost:3000/orden-producto'
+  api_url='https://distribuidora-aiol-api.herokuapp.com/orden-producto'
 
   constructor( private http:HttpClient) { }
 

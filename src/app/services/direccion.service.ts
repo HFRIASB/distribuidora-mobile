@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DireccionService {
 
-  api_url='http://localhost:3000/direccion/'
+  api_url='https://distribuidora-aiol-api.herokuapp.com/direccion/'
 
   constructor( private http:HttpClient) { }
 
