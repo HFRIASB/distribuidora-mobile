@@ -8,10 +8,10 @@ import { Pago } from '../models/pago';
 })
 export class OrdenService {
 
-  api_url = 'http://localhost:3000/orden/'
-  api_url_producto = 'http://localhost:3000/'
+  api_url = 'https://distribuidora-aiol-api.herokuapp.com/orden/'
+  api_url_producto = 'https://distribuidora-aiol-api.herokuapp.com/'
 
-  api_url_pago = 'http://localhost:3000/pago/'
+  api_url_pago = 'https://distribuidora-aiol-api.herokuapp.com/pago/'
 
   constructor(private http: HttpClient) { }
 
