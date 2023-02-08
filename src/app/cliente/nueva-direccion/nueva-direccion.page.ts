@@ -5,7 +5,9 @@ import { environment } from 'src/environments/environment';
 import { ToastController } from '@ionic/angular';
 import { DireccionService } from 'src/app/services/direccion.service';
 import { AlertController } from '@ionic/angular';
+import { Geolocation } from '@capacitor/geolocation';
 
+declare var google: any;
 @Component({
   selector: 'app-nueva-direccion',
   templateUrl: './nueva-direccion.page.html',
@@ -18,9 +20,11 @@ export class NuevaDireccionPage implements OnInit {
 
   id_usuario = null;
 
-  @ViewChild('map')
-  mapRef: ElementRef<HTMLElement>;
-  newMap: GoogleMap;
+  @ViewChild("map", { static: false }) mapRef: ElementRef;
+  newMap: any;
+  //newMap: GoogleMap;
+  previusMarker;
+
   center: any = {
     lat: -17.380771,
     lng: -66.153296,
@@ -53,39 +57,54 @@ export class NuevaDireccionPage implements OnInit {
     this.createMap();
   }
 
-  async createMap() {
-    try {
-      this.newMap = await GoogleMap.create({
-        id: 'capacitor-google-maps',
-        element: this.mapRef.nativeElement,
-        apiKey: environment.google_maps_api_key,
-        config: {
-          center: this.center,
-          zoom: 13,
-        },
-      });
-
-      //Habilitar mi Ubicacion
-      await this.newMap.enableCurrentLocation(true);
-
-      this.addListeners();
-    } catch (e) {
-      console.log(e);
-    }
-  }
-
-  async addMarker(lat, lng) {
-    //Add a marker to he map
-    if (this.markerId) this.removeMarker();
-    this.markerId = await this.newMap.addMarker({
-      coordinate: {
-        lat: lat,
-        lng: lng,
-      },
-      //title: ,
-      draggable: true
-    });
-  }
+    async createMap() {
+      Geolocation.getCurrentPosition()
+        .then(async resp => {
+          let latLng = new google.maps.LatLng(resp.coords.latitude, resp.coords.longitude);
+          let mapOptions = {
+            center: latLng,
+            zoom: 15,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          }
+          this.newMap = new google.maps.Map(
+            this.mapRef.nativeElement,
+            mapOptions
+          )
+  
+          google.maps.event.addListener(this.newMap, 'click', (event) => {
+              if (this.previusMarker) {
+                this.previusMarker.setMap(null);
+              }
+              let latLng = event.latLng.toJSON();
+              this.direccion.direccion_latitud = latLng.lat.toString();
+              this.direccion.direccion_longitud = latLng.lng.toString();
+              this.previusMarker = new google.maps.Marker({
+                position: latLng,
+                map: this.newMap,
+                icon: {
+                  //url: "assets/icon/icons8-location-50.png",
+                  scale: 4
+                }
+              })
+            })
+          })
+          
+    
+      }
+      async addMarker(lat, lng) {
+        //Add a marker to he map
+        this.previusMarker = new google.maps.Marker({
+          position:{
+            lat:lat,
+            lng:lng
+          },
+          map: this.newMap,
+          icon: {
+            url: "assets/icon/icons8-location-50.png",
+            scale: 4
+          }
+        })
+      }
 
   async removeMarker(id?) {
     await this.newMap.removeMarker(id ? id : this.markerId);
@@ -93,14 +112,15 @@ export class NuevaDireccionPage implements OnInit {
 
   async addListeners() {
     //Handle marker click
-
-    await this.newMap.setOnMapClickListener((event) => {
-      console.log('setOnMapClickListener', event);
+    google.maps.event.addListener(this.newMap, 'click', (event) => {
+      if (this.previusMarker) {
+        this.previusMarker.setMap(null);
+      }
+      let latLng = event.latLng.toJSON();
       this.direccion.direccion_latitud = event.latitude;      //guardar latitude
-      this.direccion.direccion_longitud = event.longitude;    //guardar longitude
+      this.direccion.direccion_longitud = event.longitude; 
       this.addMarker(event.latitude, event.longitude);
-    });
-
+    })
     await this.newMap.setOnMyLocationButtonClickListener((event) => {
       console.log('setOnMyLocationButtonClickListener', event);
       //this.addMarker(event.latitude, event.longitude);
@@ -109,9 +129,8 @@ export class NuevaDireccionPage implements OnInit {
     await this.newMap.setOnMyLocationClickListener((event) => {
       console.log('setOnMyLocationClickListener', event);
       //this.addMarker(event.latitude, event.longitude);
-    });
-
-  }
+    });
+  }
 
   confirmarUbiacion(isOpen) {
     console.log(this.direccion)
