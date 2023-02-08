@@ -47,12 +47,14 @@
   <ion-content>
 
     <ion-list class="lista">
-      <div  class="labelFecha"></div>
-      <ion-label >Seleccione una fecha de entrega: </ion-label>
-      <ion-item class="input">
-        <ion-input value="{{ date | date: 'dd.MM.yyyy' }}" id="date" placeholder="Seleccione una Fecha de Entrega">
-        </ion-input>
-      </ion-item>
+        <div  class="labelFecha"></div>
+        <ion-label class="labelFecha">Seleccione una fecha de entrega: </ion-label>
+        <ion-item class="input">
+          <ion-input value="{{ date | date: 'dd.MM.yyyy' }}" id="date" placeholder="Seleccione una Fecha de Entrega">
+          </ion-input>
+        </ion-item>
+
+     
       <ion-popover trigger="date" size="cover">
         <ng-template>
           <ion-datetime presentation="date" [(ngModel)]="date" [showDefaultButtons]="true" doneText="Aceptar"
@@ -64,12 +66,12 @@
 
       <ion-item >
         <div class="display">
-          <div>
+          
             <div  class="labelCliente"></div>
             <ion-label>Cliente: {{clienteElegido.nombre_usu}}</ion-label>
             <ion-button shape="round" color="primary" (click)="buscarCliente(true)" class="textBoton">Seleccionar Cliente
             </ion-button>
-          </div>
+          
           <div class="boton">
             <ion-button size="small" shape="round" color="primary" class="textBoton" (click)="agregarProducto(true)">Agregar Producto
             </ion-button>
@@ -93,7 +95,7 @@
         </ion-grid>
       </ion-item>
 <div class="labelDireccion"></div>
-      <ion-label >Seleccione una dirección: </ion-label>
+      <ion-label class="labelDireccion" >Seleccione una dirección: </ion-label>
       <ion-select (ionChange)='seleccionarDireccion($event)' placeholder="Seleccione su Dirección"
         [interfaceOptions]="customAlertOptions" interface="alert" class="input">
         <ion-select-option *ngFor="let direccion of clienteElegido.direccion" value="{{direccion.id_direc}}">

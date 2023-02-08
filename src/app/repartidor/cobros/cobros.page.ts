@@ -27,7 +27,12 @@ export class CobrosPage implements OnInit {
         })
       })
       this.authService.getOnlyClientes().subscribe((clientes: Usuario[])=>{
-        this.clientes = clientes;
+        clientes.forEach(element => {
+          if(element.deuda_usu>0)
+          {
+            this.clientes.unshift(element)
+          }  
+        });
       })
     }
 

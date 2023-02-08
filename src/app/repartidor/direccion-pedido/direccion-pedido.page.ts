@@ -8,6 +8,7 @@ import { OrdenService } from 'src/app/services/orden.service';
 import { Orden } from 'src/app/models/orden';
 import { Usuario } from 'src/app/models/usuario';
 
+declare var google: any;
 @Component({
   selector: 'app-direccion-pedido',
   templateUrl: './direccion-pedido.page.html',
@@ -17,9 +18,8 @@ export class DireccionPedidoPage implements OnInit {
   image= "../../../assets/icon/logoEmpresa.png"
 
 
-  @ViewChild('map3')
-  mapRef: ElementRef<HTMLElement>;
-  newMap: GoogleMap;
+  @ViewChild("map", { static: false }) mapElement: ElementRef;
+  map: any;
   center: any;
   markerId: string;
   idRepartidor = null;
@@ -48,43 +48,35 @@ export class DireccionPedidoPage implements OnInit {
   }
 
   async createMap(direccion) {
-    console.log("si agarraaaaa",direccion)
-    try {
-      this.newMap = await GoogleMap.create({
-        id: 'capacitor-google-maps',
-        element: this.mapRef.nativeElement,
-        apiKey: environment.google_maps_api_key,
-        config: {
-          center: {
-            // The initial position to be rendered by the map
-            lat: Number(this.direccion.lat_direc),
-            lng: Number(this.direccion.lng_direc),
-          },
-          zoom: 18,
-        },
-      });
-
-      //Habilitar mi Ubicacion
-      //await this.newMap.enableCurrentLocation(true);
-
-      this.addMarker(Number(this.direccion.lat_direc), Number(this.direccion.lng_direc));
-    } catch (e) {
-      console.log(e);
-    }
+    let latLng = new google.maps.LatLng(+this.direccion.lat_direc, +this.direccion.lng_direc);
+    let mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      styles: [
+        {
+          "featureType": "poi",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        }
+      ]
+    };
+    this.map = new google.maps.Map(
+      this.mapElement.nativeElement,
+      mapOptions
+    ) 
+    let mapMarker = new google.maps.Marker({
+      position: latLng,
+      icon: {
+        color: '#fecb00',
+        //url: "assets/icon/icons8-location-50.png",
+        scale: 4
+      }
+    })
+    mapMarker.setMap(this.map)
   }
-
-  async addMarker(lat, lng) {
-    //Add a marker to he map
-    this.markerId = await this.newMap.addMarker({
-      coordinate: {
-        lat: lat,
-        lng: lng,
-      },
-      title: "Mi Casa",
-      draggable: false
-    });
-  }
-
+ 
   goBack() {
     this.router.navigate(['/pedido-vista', this.idRepartidor, this.orden.id_ord.toString()], { relativeTo: this.route, replaceUrl: true })
   }

@@ -47,12 +47,12 @@
   </ion-header>
 
   <ion-content>
-    
-  <div *ngIf="productos.length == 0" class="flexContainerCenter">
-    <div class="container">
-      <ion-label >"Por el momento no contamos con productos a la venta, favor regrese mas tarde" </ion-label>
+
+    <div *ngIf="productos.length == 0" class="flexContainerCenter">
+      <div class="container">
+        <ion-label>"Por el momento no contamos con productos a la venta, favor regrese mas tarde" </ion-label>
+      </div>
     </div>
-  </div>
     <div *ngFor="let product of productos">
       <ion-grid>
         <ion-card>
@@ -60,21 +60,21 @@
             <ion-img class="image" [src]="product.foto_prod"></ion-img>
           </ion-row>
           <ion-row class="borde">
-          <ion-col size="8">
-            <ion-row>
-              <ion-label class="wrap">{{product.nombre_prod}} </ion-label>
-            </ion-row>
-            <ion-row>
-              <ion-label  class="subtitle" color="medium">{{product.uniMedida_prod}} </ion-label>
-            </ion-row>
-          </ion-col>
-          <ion-col size="2" class="icon">
-            <ion-icon (click)="addCart(product)" name="cart-outline" color="primary"></ion-icon>
-          </ion-col>
-        </ion-row>
+            <ion-col size="8">
+              <ion-row>
+                <ion-label class="wrap">{{product.nombre_prod}} </ion-label>
+              </ion-row>
+              <ion-row>
+                <ion-label class="subtitle" color="medium">{{product.uniMedida_prod}} </ion-label>
+              </ion-row>
+            </ion-col>
+            <ion-col size="2" class="icon">
+              <ion-icon (click)="addCart(product)" name="cart-outline" color="primary"></ion-icon>
+            </ion-col>
+          </ion-row>
         </ion-card>
-        
-          
+
+
       </ion-grid>
     </div>
     <div class="marginBotton">
@@ -92,22 +92,6 @@
           </ion-toolbar>
         </ion-header>
         <ion-content class="ion-padding">
-
-          <ion-item *ngFor="let item of orden.ordenProducto">
-            <ion-grid>
-              <ion-row>
-                <ion-col size="8">
-                  <ion-label class="wrap">{{item.producto.nombre_prod}} </ion-label>
-                </ion-col>
-                <ion-col size="2">
-                  <ion-label>x{{item.cantidad_op}} </ion-label>
-                </ion-col>
-                <ion-col size="1" >
-                  <ion-icon (click)="eliminarProducto(item)" name="trash-sharp" color="danger"></ion-icon>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
 
           <ion-item>
             <ion-grid>
@@ -147,12 +131,31 @@
 
                 </ion-item>
               </ion-row>
-              <div class="boton">
-                <ion-button [disabled]="this.orden.ordenProducto.length<1 || this.orden.direccion==null || date==null" shape="round" color="primary"
-                  (click)="hacerPedido(date)" class="textBoton" size="large">REALIZAR PEDIDO</ion-button>
-              </div>
             </ion-grid>
           </ion-item>
+              <ion-item *ngFor="let item of orden.ordenProducto">
+                <ion-grid>
+                  <ion-row>
+                    <ion-col size="8">
+                      <ion-label class="wrap">{{item.producto.nombre_prod}} </ion-label>
+                    </ion-col>
+                    <ion-col size="2">
+                      <ion-label>x{{item.cantidad_op}} </ion-label>
+                    </ion-col>
+                    <ion-col size="1">
+                      <ion-icon (click)="eliminarProducto(item)" name="trash-sharp" color="danger"></ion-icon>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
+              </ion-item>
+
+
+              <div class="boton">
+                <ion-button [disabled]="this.orden.ordenProducto.length<1 || this.orden.direccion==null || date==null"
+                  shape="round" color="primary" (click)="hacerPedido(date)" class="textBoton" size="large">REALIZAR
+                  PEDIDO</ion-button>
+              </div>
+        
         </ion-content>
       </ng-template>
     </ion-modal>

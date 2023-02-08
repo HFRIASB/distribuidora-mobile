@@ -30,6 +30,8 @@ export class Usuario {
     password_usu: string;
 
     observacion_usu: string;
+
+    deuda_usu:number;
     
     rol: Rol;
 

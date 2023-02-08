@@ -28,7 +28,7 @@ export class DetalleCobroPage implements OnInit {
   ) {
     this.cliente.pago = []
 
-    console.log(this.repartidor.rol)
+    // console.log(this.repartidor.rol)
     this.route.params.subscribe(params => {
       this.authService.getUsuarioById(params.id_repartidor).subscribe((repartidor: Usuario) => {
         this.repartidor = repartidor
