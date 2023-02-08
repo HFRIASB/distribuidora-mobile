@@ -7,6 +7,7 @@ import { ToastController } from '@ionic/angular';
 import { DireccionService } from 'src/app/services/direccion.service';
 import { Direccion } from 'src/app/models/direccion';
 
+declare var google: any;
 @Component({
   selector: 'app-direccion-vista',
   templateUrl: './direccion-vista.page.html',
@@ -19,9 +20,8 @@ export class DireccionVistaPage implements OnInit {
 
   direccion: Direccion = new Direccion();
 
-  @ViewChild('map1')
-  mapRef: ElementRef<HTMLElement>;
-  newMap: GoogleMap;
+  @ViewChild("map", { static: false }) mapElement: ElementRef;
+  map: any;
   center:any;
   markerId: string;
   handlerMessage = '';
@@ -51,42 +51,45 @@ export class DireccionVistaPage implements OnInit {
   // }
 
   async createMap(direccion) {
-    try {
-      this.newMap = await GoogleMap.create({
-        id: 'capacitor-google-maps',
-        element: this.mapRef.nativeElement,
-        apiKey: environment.google_maps_api_key,
-        config: {
-          
-          center: {
-            // The initial position to be rendered by the map
-            lat: Number(this.direccion.lat_direc),
-            lng: Number(this.direccion.lng_direc),
-          },
-          zoom: 18,
-        },
-      });
-
-      //Habilitar mi Ubicacion
-      //await this.newMap.enableCurrentLocation(true);
-
-      this.addMarker(Number(this.direccion.lat_direc), Number(this.direccion.lng_direc));
-    } catch (e) {
-      console.log(e);
-    }
+    let latLng = new google.maps.LatLng(+this.direccion.lat_direc, +this.direccion.lng_direc);
+    let mapOptions = {
+      center: latLng,
+      zoom: 15,
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      styles: [
+        {
+          "featureType": "poi",
+          "stylers": [
+            { "visibility": "off" }
+          ]
+        }
+      ]
+    };
+    this.map = new google.maps.Map(
+      this.mapElement.nativeElement,
+      mapOptions
+    )
+    let mapMarker = new google.maps.Marker({
+      position: latLng,
+      icon: {
+        //url: "assets/icon/icons8-location-50.png",
+        scale: 4
+      }
+    })
+    mapMarker.setMap(this.map)
   }
 
-  async addMarker(lat, lng) {
-    //Add a marker to he map
-    this.markerId = await this.newMap.addMarker({
-      coordinate: {
-        lat: lat,
-        lng: lng,
-      },
-      title: "Mi Casa",
-      draggable: false
-    });
-  }
+  // async addMarker(lat, lng) {
+  //   //Add a marker to he map
+  //   this.markerId = await this.newMap.addMarker({
+  //     coordinate: {
+  //       lat: lat,
+  //       lng: lng,
+  //     },
+  //     title: "Mi Casa",
+  //     draggable: false
+  //   });
+  // }
 
   goBack() {
     this.router.navigate(['/direcciones', this.id_usuario], { relativeTo: this.route, replaceUrl: true })
